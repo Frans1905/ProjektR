@@ -1,8 +1,10 @@
 package fer.hr.projektR.game;
 
+import java.util.List;
+
 public class Player extends GameObject {
 	double orient;
-	private int focre = 1;
+	private int force = 1;
 	Vector2D[] shape = {new Vector2D(1,0),new Vector2D(-1,0),new Vector2D(0,-5)};
 	public Player(Vector2D pos, Vector2D speed, Vector2D force, double orient) {
 		super(pos, speed);
@@ -32,7 +34,7 @@ public class Player extends GameObject {
 	}
 	
 	public Vector2D getForce() {
-		return Vector2D.I.rotate(orient).scale(focre);
+		return Vector2D.I.rotate(orient).scale(force);
 	}
 	
 	void rotateLeft(double dt) {
@@ -55,4 +57,24 @@ public class Player extends GameObject {
 	public void setOrient(double orient) {
 		this.orient = orient;
 	}
+
+	public class Bullet extends GameObject {
+    	private static final int range = 100; // !
+    
+		public void run(List<Asteroid> asteroids) {
+			for (int i = 0; i < range; i++) {
+				move(1);
+				for (Asteroid asteroid : asteroids) {
+					if (asteroid.contains(getPos())) {
+						asteroids.addAll(asteroid.split());
+						return;
+					}
+				}
+			}
+		}
+
+		Bullet() {
+			super(Player.this.getPos(), Vector2D.I.rotate(getOrient()).scale(2));
+		}
+}
 }

@@ -38,5 +38,4 @@ public class GameObject {
 		setPos(new Vector2D(dx, dy));
 	}
 	
-	
 }
