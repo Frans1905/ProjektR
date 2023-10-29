@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Player extends GameObject {
 	double orient;
-	private int force = 1;
+	public static final double Accelerate = 1, Decelerate = - 0.2; 
 	Vector2D[] shape = {new Vector2D(1,0),new Vector2D(-1,0),new Vector2D(0,-5)};
 	public Player(Vector2D pos, Vector2D speed, Vector2D force, double orient) {
 		super(pos, speed);
@@ -28,12 +28,12 @@ public class Player extends GameObject {
 	}
 	
 	@Override
-	public void move(double dt) {
-		setSpeed(Vector2D.addVector2d(getSpeed(),getForce().scale(dt)));
+	public void move(double dt, double force) {
+		setSpeed(Vector2D.addVector2d(getSpeed(),getForce(force).scale(dt)));
 		super.move(dt);
 	}
 	
-	public Vector2D getForce() {
+	public Vector2D getForce(double force) {
 		return Vector2D.I.rotate(orient).scale(force);
 	}
 	
