@@ -5,13 +5,30 @@ import java.util.List;
 
 public class Game {
 	public static final int W=800, H=600;
-	public static final int DT = 10; // !
-	private boolean wPressed = false;
-	private boolean aPressed = false;
-	private boolean dPressed = false;
-	private boolean spacePressed = false;
-	Player player = new Player();
-	List<Asteroid> asteroids = new LinkedList<>();
+	public static final double DT = 10; // ms
+	private boolean wPressed;
+	private boolean aPressed;
+	private boolean dPressed;
+	private boolean spacePressed;
+	private long score;
+	Player player;
+	List<Asteroid> asteroids;
+	
+	public Game() {
+		asteroids = new LinkedList<>();
+		newGame();
+	}
+	
+	void newGame() {
+		player = new Player(W/2, H/2);
+		asteroids.clear();
+		spawnAsteroids(10); // !
+		score = 0;
+		wPressed = false;
+		aPressed = false;
+		dPressed = false;
+		spacePressed = false;
+	}
 	
 	void spawnAsteroids(int number) {
 		for (int i = 0; i < number; i++) {
@@ -58,22 +75,33 @@ public class Game {
 
 	void step() {
 		//check input
+		player.setForce(Player.Decelerate);
 		if (wPressed) {
-			player.move(DT);
+			player.setForce(Player.Accelerate);
 			wPressed = false;
 		}
 		if (aPressed) {
-			player.rotateLeft(DT);
+			player.rotateLeft(DT/1000);
 			aPressed = false;
 		}
 		if (dPressed) {
-			player.rotateRight(DT);
+			player.rotateRight(DT/1000);
 			dPressed = false;
 		}
 		if (spacePressed) {
 			Player.Bullet bullet = player.new Bullet();
-			bullet.run(asteroids);
+			int size = bullet.run(asteroids);
+			this.score += size * 50; // privremeno
 			spacePressed = false;
+		}
+		player.move(DT/1000);
+		for (Asteroid asteroid: asteroids) {
+			asteroid.move(DT/1000);
+			if (asteroid.contains(player.getPos())) {
+				//System.exit(1); // privremeno
+				newGame();
+				return;
+			}
 		}
 	}
 }

@@ -20,6 +20,10 @@ public class Asteroid extends GameObject{
 		return nSize * radius;
 	}
 	
+	public int getSize() {
+		return nSize;
+	}
+	
 	public boolean contains(Vector2D dot) {
 		double distance = Vector2D.addVector2d(dot, Vector2D.scalarMulVector2d(getPos(), -1)).abs();
 		if (distance <= size()) {

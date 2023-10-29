@@ -1,10 +1,12 @@
 package fer.hr.projektR.game;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class Player extends GameObject {
 	double orient;
 	public static final double Accelerate = 1, Decelerate = - 0.2; 
+	private double force = Player.Decelerate;
 	Vector2D[] shape = {new Vector2D(1,0),new Vector2D(-1,0),new Vector2D(0,-5)};
 	public Player(Vector2D pos, Vector2D speed, Vector2D force, double orient) {
 		super(pos, speed);
@@ -28,12 +30,16 @@ public class Player extends GameObject {
 	}
 	
 	@Override
-	public void move(double dt, double force) {
-		setSpeed(Vector2D.addVector2d(getSpeed(),getForce(force).scale(dt)));
+	public void move(double dt) {
+		setSpeed(Vector2D.addVector2d(getSpeed(),getForceVector().scale(dt)));
 		super.move(dt);
 	}
 	
-	public Vector2D getForce(double force) {
+	public void setForce(double force) {
+		this.force = force;
+	}
+	
+	public Vector2D getForceVector() {
 		return Vector2D.I.rotate(orient).scale(force);
 	}
 	
@@ -61,20 +67,23 @@ public class Player extends GameObject {
 	public class Bullet extends GameObject {
     	private static final int range = 100; // !
     
-		public void run(List<Asteroid> asteroids) {
+		public int run(List<Asteroid> asteroids) {
 			for (int i = 0; i < range; i++) {
 				move(1);
-				for (Asteroid asteroid : asteroids) {
+				for (Iterator<?> iter = asteroids.iterator(); iter.hasNext();) {
+					Asteroid asteroid = (Asteroid) iter.next();
 					if (asteroid.contains(getPos())) {
 						asteroids.addAll(asteroid.split());
-						return;
+						iter.remove();
+						return asteroid.getSize();
 					}
 				}
 			}
+			return 0;
 		}
 
 		Bullet() {
 			super(Player.this.getPos(), Vector2D.I.rotate(getOrient()).scale(2));
 		}
-}
+	}
 }
