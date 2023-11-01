@@ -1,6 +1,8 @@
-package fer.hr.projektR.game;
+package hr.fer.projektR.game;
 
-public class GameObject {
+import javafx.scene.canvas.GraphicsContext;
+
+public class GameObject implements Drawable {
 	private Vector2D pos, speed;
 	public GameObject(Vector2D pos, Vector2D speed) {
 		this.pos = pos;
@@ -16,8 +18,8 @@ public class GameObject {
 		setPos(Vector2D.addVector2d(getPos(), getSpeed().scale(dt)));
 		if (pos.x > Game.W) pos.x -= Game.W;
 		if (pos.x < 0) pos.x += Game.W;
-		if (pos.x > Game.H) pos.x -= Game.H;
-		if (pos.x < 0 ) pos.x += Game.H;
+		if (pos.y > Game.H) pos.y -= Game.H;
+		if (pos.y < 0 ) pos.y += Game.H;
 	}
 	public Vector2D getPos() {
 		return pos;
@@ -36,6 +38,9 @@ public class GameObject {
 	}
 	public void setSpeed(double dx, double dy) {
 		setPos(new Vector2D(dx, dy));
+	}
+	@Override
+	public void draw(GraphicsContext gc) {
 	}
 	
 }

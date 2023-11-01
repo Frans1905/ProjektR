@@ -1,9 +1,11 @@
-package fer.hr.projektR.game;
+package hr.fer.projektR.game;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class Game {
+import javafx.scene.canvas.GraphicsContext;
+
+public class Game implements Drawable {
 	public static final int W=800, H=600;
 	public static final double DT = 10; // ms
 	private boolean wPressed;
@@ -11,15 +13,15 @@ public class Game {
 	private boolean dPressed;
 	private boolean spacePressed;
 	private long score;
-	Player player;
-	List<Asteroid> asteroids;
+	private Player player;
+	private List<Asteroid> asteroids;
 	
 	public Game() {
 		asteroids = new LinkedList<>();
 		newGame();
 	}
 	
-	void newGame() {
+	private void newGame() {
 		player = new Player(W/2, H/2);
 		asteroids.clear();
 		spawnAsteroids(10); // !
@@ -30,7 +32,13 @@ public class Game {
 		spacePressed = false;
 	}
 	
-	void spawnAsteroids(int number) {
+	public void testGame() {
+		newGame();
+		asteroids.clear();
+//		asteroids.add(new Asteroid(W/2,100,0,0,2));
+	}
+	
+	private void spawnAsteroids(int number) {
 		for (int i = 0; i < number; i++) {
 			double x = 0;
 			double y = 0;
@@ -53,31 +61,31 @@ public class Game {
 					y = Math.random() * H;
 					break;
 			}
-			Vector2D speed = Vector2D.I.rotate(Math.random() * 2 * Math.PI).scale(Math.random() * 5); // !
-			int size = (int) (Math.random() * Asteroid.maxSize) + 1;
+			Vector2D speed = Vector2D.I.rotate(Math.random() * 2 * Math.PI).scale(Math.random() * 25 + 50); // !
+			int size = 1<<((int) (Math.random() * 2.99)) ;
 
 			asteroids.add(new Asteroid(new Vector2D(x, y), speed, size));
 		}
 	}
 
-	void wInput() {
+	public void wInput() {
 		wPressed = true;
 	}
-	void aInput() {
+	public void aInput() {
 		aPressed = true;
 	}
-	void dInput() {
+	public void dInput() {
 		dPressed = true;
 	}
-	void spaceInput() {
+	public void spaceInput() {
 		spacePressed = true;
 	}
 
-	void step() {
+	public void step() {
 		//check input
-		player.setForce(Player.Decelerate);
+		player.setForce(false);
 		if (wPressed) {
-			player.setForce(Player.Accelerate);
+			player.setForce(true);
 			wPressed = false;
 		}
 		if (aPressed) {
@@ -103,5 +111,29 @@ public class Game {
 				return;
 			}
 		}
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public List<Asteroid> getAsteroids() {
+		return asteroids;
+	}
+
+	@Override
+	public void draw(GraphicsContext gc) {
+		player.draw(gc);
+		for (Asteroid asteroid: asteroids) {
+			asteroid.draw(gc);
+			
+		}
+	}
+	public static void main(String[] args) {
+		Game game = new Game();
+		game.testGame();
+		game.spaceInput();
+		game.step();
+		System.out.println(game.score);
 	}
 }

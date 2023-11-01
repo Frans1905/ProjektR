@@ -1,13 +1,15 @@
-package fer.hr.projektR.game;
+package hr.fer.projektR.game;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javafx.scene.canvas.GraphicsContext;
+
 public class Asteroid extends GameObject{
 	private int nSize;
-	private final int radius = 100;
-	public static final int maxSize = 3; // !
+	private final int radius = 20;
+	public static final int maxSize = 4; // !
 	public Asteroid(Vector2D pos, Vector2D speed, int size) {
 		super(pos, speed);
 		nSize = size;
@@ -43,5 +45,11 @@ public class Asteroid extends GameObject{
 		smallerAsteroid.add(asteroid1);
 		smallerAsteroid.add(asteroid2);
 		return smallerAsteroid;
+	}
+	
+	@Override
+	public void draw(GraphicsContext gc) {
+		gc.strokeOval(getPos().x-size(), getPos().y-size(), 2*size(), 2*size() );
+		super.draw(gc);
 	}
 }
