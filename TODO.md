@@ -9,4 +9,5 @@
 9. Periodično stvarati nove asteroide i ograničiti ih
 10. Dodati buffer
 11. "Kvrgavi asteroidi"
-12. Glave profesora za asteroide (joke)
+12. strelice kao alternativa za wasd
+13. Glave profesora za asteroide (joke)
