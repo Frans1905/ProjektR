@@ -6,7 +6,7 @@
 6. AFTER ALL ABOVE: create step function // Lovro
 7. Ispis score. (easy)
 8. Nacrtati laser na 1 frame (hard)
-9. Periodično stvarati nove asteroide i ograničiti ih (mid)
+9. Periodično stvarati nove asteroide i ograničiti ih (mid) // Fran
 10. Dodati buffer (mid)
 11. "Kvrgavi asteroidi" (hard)
 12. strelice kao alternativa za wasd (easy)
