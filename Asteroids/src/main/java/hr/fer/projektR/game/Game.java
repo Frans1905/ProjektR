@@ -8,6 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 public class Game implements Drawable {
 	public static final int W=800, H=600;
 	public static final double DT = 10; // ms
+	private static final int MAX_ASTEROID_MATERIAL = 50; //Najveći mogući zbroj size atributa svih prisutnih asteroida
 	private boolean wPressed;
 	private boolean aPressed;
 	private boolean dPressed;
@@ -15,6 +16,8 @@ public class Game implements Drawable {
 	private long score;
 	private Player player;
 	private List<Asteroid> asteroids;
+	private int asteroidAlarm;
+	private int asteroidMaterial;
 	
 	public Game() {
 		asteroids = new LinkedList<>();
@@ -25,6 +28,7 @@ public class Game implements Drawable {
 		player = new Player(W/2, H/2);
 		asteroids.clear();
 		spawnAsteroids(10); // !
+		setAsteroidAlarm();
 		score = 0;
 		wPressed = false;
 		aPressed = false;
@@ -32,6 +36,11 @@ public class Game implements Drawable {
 		spacePressed = false;
 	}
 	
+	private void setAsteroidAlarm() {
+		// TODO Auto-generated method stub
+		asteroidAlarm = (int)Math.random() * 50 + 100;
+	}
+
 	public void testGame() {
 		newGame();
 		asteroids.clear();
@@ -62,8 +71,10 @@ public class Game implements Drawable {
 					break;
 			}
 			Vector2D speed = Vector2D.I.rotate(Math.random() * 2 * Math.PI).scale(Math.random() * 25 + 50); // !
-			int size = 1<<((int) (Math.random() * 2.99)) ;
-
+			int size = 1<< (int) (Math.random() * 2.99);
+			// int size = 3 + (int)(Math.random() * 1.99); za manju varijaciju u veličini asteroida
+			if (asteroidMaterial + size > MAX_ASTEROID_MATERIAL) size = MAX_ASTEROID_MATERIAL - asteroidMaterial;
+			asteroidMaterial += size;
 			asteroids.add(new Asteroid(new Vector2D(x, y), speed, size));
 		}
 	}
@@ -83,6 +94,13 @@ public class Game implements Drawable {
 
 	public void step() {
 		//check input
+		if (asteroidMaterial < MAX_ASTEROID_MATERIAL) {
+			asteroidAlarm--;
+		}
+		if (asteroidAlarm == 0) {
+			setAsteroidAlarm();
+			spawnAsteroids(1);
+		}
 		player.setForce(false);
 		if (wPressed) {
 			player.setForce(true);
@@ -100,6 +118,7 @@ public class Game implements Drawable {
 			Player.Bullet bullet = player.new Bullet();
 			int size = bullet.run(asteroids);
 			this.score += size * 50; // privremeno
+			if (size == 1) asteroidMaterial--;
 			spacePressed = false;
 		}
 		player.move(DT/1000);
@@ -111,6 +130,7 @@ public class Game implements Drawable {
 				return;
 			}
 		}
+		
 	}
 
 	public Player getPlayer() {
