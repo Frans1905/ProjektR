@@ -92,6 +92,12 @@ public class Player extends GameObject {
 			return 0;
 		}
 
+		//----------------------------------------------------------------
+		public void draw(GraphicsContext gc) {
+			gc.strokeLine(Player.this.getPos().x, Player.this.getPos().y, Vector2D.addVector2d(Player.this.getPos(), Vector2D.I.rotate(getOrient()).scale(2*RANGE)).x, Vector2D.addVector2d(Player.this.getPos(), Vector2D.I.rotate(getOrient()).scale(2*RANGE)).y);
+			super.draw(gc);
+		}
+
 		Bullet() {
 			super(Player.this.getPos(), Vector2D.I.rotate(getOrient()).scale(2));
 		}
