@@ -31,6 +31,7 @@ public class AsteroidsGame extends Application {
 	    GraphicsContext gc = canvas.getGraphicsContext2D();
 	    Affine t = new Affine();
 	    t.appendTranslation(-80, -80);
+	    gc.setTransform(t);
 	    gc.setFill( Color.BLACK );
 	    gc.setStroke(Color.WHITE);
 	    long startNanoTime = System.nanoTime();
