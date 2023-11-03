@@ -6,7 +6,7 @@ import java.util.List;
 import javafx.scene.canvas.GraphicsContext;
 
 public class Game implements Drawable {
-	public static final int W=800, H=600;
+	public static final int W=960, H=760;
 	public static final double DT = 10; // ms
 	private static final int MAX_ASTEROID_MATERIAL = 50; //Najveći mogući zbroj size atributa svih prisutnih asteroida
 	private boolean wPressed;

@@ -10,6 +10,7 @@ import javafx.scene.*;
 import javafx.scene.canvas.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.*;
+import javafx.scene.transform.Affine;
 import javafx.stage.Stage;
 
 public class AsteroidsGame extends Application {
@@ -25,9 +26,11 @@ public class AsteroidsGame extends Application {
 	    Group root = new Group();
 	    Scene theScene = new Scene( root );
 	    theStage.setScene( theScene );
-	    Canvas canvas = new Canvas(Game.W,  Game.H);
+	    Canvas canvas = new Canvas(800,  600);
 	    root.getChildren().add( canvas );
 	    GraphicsContext gc = canvas.getGraphicsContext2D();
+	    Affine t = new Affine();
+	    t.appendTranslation(-80, -80);
 	    gc.setFill( Color.BLACK );
 	    gc.setStroke(Color.WHITE);
 	    long startNanoTime = System.nanoTime();
