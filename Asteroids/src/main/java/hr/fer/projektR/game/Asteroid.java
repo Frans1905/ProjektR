@@ -38,12 +38,14 @@ public class Asteroid extends GameObject{
 
 	public Collection<? extends Asteroid> split() {
 		List<Asteroid> smallerAsteroid = new ArrayList<>();
-		Vector2D speed1 = this.getSpeed().rotate(Math.random() * 2 * Math.PI).scale(2);
-		Vector2D speed2 = this.getSpeed().rotate(Math.random() * 2 * Math.PI).scale(2);
-		Asteroid asteroid1 = new Asteroid(this.getPos(), speed1, this.getSize() / 2);
-		Asteroid asteroid2 = new Asteroid(this.getPos(), speed2, this.getSize() / 2);
-		smallerAsteroid.add(asteroid1);
-		smallerAsteroid.add(asteroid2);
+		if (nSize > 1) {
+			Vector2D speed1 = this.getSpeed().rotate(Math.random() * 2 * Math.PI).scale(2);
+			Vector2D speed2 = this.getSpeed().rotate(Math.random() * 2 * Math.PI).scale(2);
+			Asteroid asteroid1 = new Asteroid(this.getPos(), speed1, this.getSize() / 2);
+			Asteroid asteroid2 = new Asteroid(this.getPos(), speed2, this.getSize() / 2);
+			smallerAsteroid.add(asteroid1);
+			smallerAsteroid.add(asteroid2);			
+		}
 		return smallerAsteroid;
 	}
 	

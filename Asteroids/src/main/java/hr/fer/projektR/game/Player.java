@@ -92,6 +92,21 @@ public class Player extends GameObject {
 			return 0;
 		}
 
+		public void draw(GraphicsContext gc) {
+			double oldWidth = gc.getLineWidth();
+			gc.setLineWidth(2);
+			Vector2D bulletStart = Player.this.getPos();
+			Vector2D bulletEnd = Vector2D.addVector2d(bulletStart, Vector2D.I.rotate(getOrient()).scale(2*RANGE));
+			
+			int[] dx = {0,0,0,+Game.W,+Game.W,+Game.W,-Game.W,-Game.W,-Game.W};
+			int[] dy = {0,+Game.H,-Game.H,0,+Game.H,-Game.H,0,+Game.H,-Game.H};
+			for (int i = 0; i < 9; i++) {
+				gc.strokeLine(bulletStart.x+dx[i], bulletStart.y+dy[i], bulletEnd.x+dx[i], bulletEnd.y+dy[i]);				
+			}
+			gc.setLineWidth(oldWidth);
+			super.draw(gc);
+		}
+
 		Bullet() {
 			super(Player.this.getPos(), Vector2D.I.rotate(getOrient()).scale(2));
 		}

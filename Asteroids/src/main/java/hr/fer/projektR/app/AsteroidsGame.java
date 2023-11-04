@@ -93,12 +93,15 @@ public class AsteroidsGame extends Application {
                     public void handle(KeyEvent e)
                     {
                     	switch (e.getCode()) {
+                    	case LEFT:
 						case A:
 							keyA=false;
 							break;
+						case RIGHT:
 						case D:
 							keyD=false;
 							break;
+						case UP:
 						case W:
 							keyW=false;
 							break;
