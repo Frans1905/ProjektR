@@ -7,7 +7,7 @@
 7. Ispis score. (easy) // Lovro
 8. Nacrtati laser na 1 frame (hard) // Vilim DONE (u branchu metak)
 9. Periodično stvarati nove asteroide i ograničiti ih (mid) // Fran DONE
-10. Dodati buffer (hard) // Lovro
-11. "Kvrgavi asteroidi" (hard)
+10. Dodati buffer (hard)
+11. "Kvrgavi asteroidi" (hard) // Lovro
 12. strelice kao alternativa za wasd (easy) // Lovro
 13. Glave profesora za asteroide (joke)
