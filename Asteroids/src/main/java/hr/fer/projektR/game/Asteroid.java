@@ -8,7 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class Asteroid extends GameObject{
 	private int nSize;
-	private final int radius = 20;
+	private static final int radius = 20;
 	public static final int maxSize = 4; // !
 	public Asteroid(Vector2D pos, Vector2D speed, int size) {
 		super(pos, speed);
@@ -29,7 +29,7 @@ public class Asteroid extends GameObject{
 	}
 	
 	public boolean contains(Vector2D dot) {
-		double distance = Vector2D.addVector2d(dot, Vector2D.scalarMulVector2d(getPos(), -1)).abs();
+		double distance = Vector2D.distance(dot, getPos());
 		if (distance <= size()) {
 			return true;
 		}

@@ -14,6 +14,9 @@ public class Vector2D {
 	public static Vector2D addVector2d(Vector2D vector1, Vector2D vector2) {
 		return new Vector2D(vector1.x + vector2.x, vector1.y + vector2.y);
 	}
+	public static Vector2D subVector2d(Vector2D vector1, Vector2D vector2) {
+		return addVector2d(vector1, vector2.scale(-1));
+	}
 	public static Vector2D scalarMulVector2d(Vector2D vector, double scalar) {
 		return new Vector2D(vector.x * scalar, vector.y * scalar);
 	}
@@ -23,6 +26,9 @@ public class Vector2D {
 	}
 	public static double dotProduct(Vector2D vector1, Vector2D vector2) {
 		return vector1.x*vector2.x + vector1.y*vector2.y;
+	}
+	public static double distance(Vector2D vector1, Vector2D vector2) {
+		return subVector2d(vector1, vector2).abs();
 	}
 	public double abs() {
 		return Math.sqrt(x*x + y * y);

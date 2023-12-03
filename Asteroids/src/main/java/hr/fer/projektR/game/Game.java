@@ -3,6 +3,8 @@ package hr.fer.projektR.game;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.imageio.plugins.tiff.ExifGPSTagSet;
+
 import javafx.scene.canvas.GraphicsContext;
 
 public class Game implements Drawable {
@@ -113,7 +115,7 @@ public class Game implements Drawable {
 		player.move(DT/1000);
 		for (Asteroid asteroid: asteroids) {
 			asteroid.move(DT/1000);
-			if (asteroid.contains(player.getPos())) {
+			if (player.isHitBy(asteroid)) {
 				//System.exit(1); // privremeno
 				newGame();
 				return;
