@@ -4,7 +4,7 @@ import java.util.function.DoubleUnaryOperator;
 
 public class Matrix {
 	private final int nrow,ncol;
-	final double[][] matrix;
+	public final double[][] matrix;
 	public Matrix(int rows, int ncol) {
 		if (rows < 1 || ncol < 1) {
 			throw new MatrixSizeException();
@@ -35,7 +35,7 @@ public class Matrix {
 		return new Matrix(m.nrow, m.ncol);
 	}
 	
-	private void copy(Matrix m) {
+	public void copy(Matrix m) {
 		if (!checkDim(m.nrow, m.ncol)) throw new MatrixSizeException();
 		for (int i = 0; i < nrow; i++) {
 			for (int j = 0; j < ncol; j++) {

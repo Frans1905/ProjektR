@@ -20,7 +20,7 @@ public class Vector extends Matrix {
 		super(v);
 		this.n = v.n;
 	}
-	int size() {
+	public int size() {
 		return n;
 	}
 }
