@@ -102,7 +102,7 @@ public class Matrix {
 	
 	public Matrix multiply(final Matrix other) {
 		Matrix resault = new Matrix(this.nrow, other.ncol);
-		this.add(other,resault);
+		this.multiply(other,resault);
 		return resault;
 	}
 	
