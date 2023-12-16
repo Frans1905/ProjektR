@@ -12,7 +12,7 @@ public class test {
 		JedinkaFactroy fact = new JedinkaFactroy() {
 			@Override
 			public Jedinka create() {
-				return new NeuralNetworkSin(1,15,10,1);
+				return new NeuralNetworkSin(1,15,15,1);
 			}
 		};
 //		NeuralNetworkSin net = (NeuralNetworkSin) fact.create();
@@ -22,10 +22,10 @@ public class test {
 //			System.out.println(l.getBiases());
 //			System.out.println();
 //		}
-		Evolution darwin = new Evolution(60, fact);
+		Evolution darwin = new Evolution(65, fact);
 		Vector in = new Vector(1);
-		System.out.println(darwin.run(0, 1, 40000)-1);
-
+		System.out.println(darwin.run(0, 0.001, 60000)-1);
+		
 		for (double x = 0; x < 2*Math.PI; x+=2*Math.PI/20) {
 			in.matrix[0][0]=x;
 			double rez = ((NeuralNetwork)darwin.getBest()).process(in).matrix[0][0];

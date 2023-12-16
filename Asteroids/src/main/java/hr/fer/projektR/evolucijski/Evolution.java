@@ -1,7 +1,9 @@
 package hr.fer.projektR.evolucijski;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 public class Evolution{
 	private List<Jedinka> generation, sideGeneration;
@@ -43,7 +45,8 @@ public class Evolution{
 //		System.out.println(minGoodnes);
 	}
 	public void nextGeneration() {
-		for (int i = 0; i < generationSize; i++) {
+		sideGeneration.get(0).copy(getBest());
+		for (int i = 1; i < generationSize; i++) {
 			Jedinka par1,par2;
 			par1 = selectParent();
 			par2 = selectParent();
@@ -79,9 +82,12 @@ public class Evolution{
 		while(target-goodnes[best]>tresh && k++ < maxIter) {
 			nextGeneration();
 			if (k%100 == 0) {
-				System.out.println(goodnes[best]);
+				System.out.println(String.format("%.7f", goodnes[best]));
 			}
 		}
 		return k;
+	}
+	
+	public void testPrint() {
 	}
 }

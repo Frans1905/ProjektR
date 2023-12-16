@@ -35,22 +35,22 @@ public class NeuralNetworkSin extends NeuralNetwork {
 			double rez = process(in).matrix[0][0];
 			fit += Math.pow(rez - Math.sin(x),2);
 		}
-		return -fit*1000;
+		return -fit;
 	}
 
 	@Override
 	public void mutate() {
-		super.mutate(4e-5);
+		super.mutate(7e-3,0.8,0.9);
 	}
 	
 	@Override
-	double mutateRandom() {
-		return rand.nextGaussian()*100;
+	double bigRandom() {
+		return rand.nextGaussian()*50;
 	}
 	
 	@Override
-	double startRandom() {
-		return super.startRandom()*15;
+	double smallRandom() {
+		return super.smallRandom();
 	}
 
 }

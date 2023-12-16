@@ -6,7 +6,6 @@ import hr.fer.projektR.math.Vector;
 public abstract class NeuralNetwork implements Jedinka {
 	private Layer[] layers;
 	
-	
 	public NeuralNetwork(Layer[] layers) {
 		this.layers = layers;
 	}
@@ -39,10 +38,16 @@ public abstract class NeuralNetwork implements Jedinka {
 		return sizes;
 	}
 	
-	public void mutate(double alpha) {
+	public void mutate(double alpha, double big, double relative) {
 		for(int i = 0; i < layers.length; i++) {
-			layers[i].getWeights().applyToAll((t) -> (Math.random()<alpha)?t+mutateRandom():t);
-			layers[i].getBiases().applyToAll((t) -> (Math.random()<alpha)?t+mutateRandom():t);
+			if (Math.random() < alpha) {
+				double delat = (Math.random() < big)?bigRandom():smallRandom();
+				layers[i].getWeights().applyToAll((t) -> (Math.random()<alpha)?t+delat:delat);		
+			}
+			if (Math.random() < alpha) {
+				double delat = (Math.random() < big)?bigRandom():smallRandom();
+				layers[i].getBiases().applyToAll((t) -> (Math.random()<relative)?t+delat:delat);				
+			}
 		}
 
 	}
@@ -86,15 +91,15 @@ public abstract class NeuralNetwork implements Jedinka {
 	
 	public void randomize() {
 		for(int i = 0; i < layers.length; i++) {
-			layers[i].getWeights().applyToAll((t) -> startRandom());
-			layers[i].getBiases().applyToAll((t) -> startRandom());
+			layers[i].getWeights().applyToAll((t) -> smallRandom());
+			layers[i].getBiases().applyToAll((t) -> smallRandom());
 		}
 	}
 
-	double startRandom() {
+	double smallRandom() {
 		return Math.random() * 2 - 1;
 	}
-	double mutateRandom() {
-		return Math.random() * 2 - 1;
+	double bigRandom() {
+		return 20 * smallRandom();
 	}
 }
