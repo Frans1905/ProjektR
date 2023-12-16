@@ -1,11 +1,13 @@
 package hr.fer.projektR.game;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.imageio.plugins.tiff.ExifGPSTagSet;
-
+import hr.fer.projektR.game.comparators.ClosestAngleComparator;
+import hr.fer.projektR.game.comparators.ClosestDistanceComparator;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Paint;
 
 public class Game implements Drawable {
 	public static final int W=960, H=760;
@@ -20,6 +22,11 @@ public class Game implements Drawable {
 	private List<Asteroid> asteroids;
 	private int asteroidAlarm;
 	private Player.Bullet bullet;
+	// !!!
+	List<Asteroid> closestDistance;
+	List<Asteroid> closestAngle;
+	// !!!
+
 	public Game() {
 		asteroids = new LinkedList<>();
 		newGame();
@@ -34,6 +41,11 @@ public class Game implements Drawable {
 		aPressed = false;
 		dPressed = false;
 		spacePressed = false;
+	}
+
+	public List<Asteroid> filterAsteroids(Comparator<? super Asteroid> c, int n) {
+		asteroids.sort(c);
+		return new LinkedList<>(asteroids.subList(0, n));
 	}
 	
 	private void setAsteroidAlarm() {
@@ -128,6 +140,11 @@ public class Game implements Drawable {
 			this.score += size * 50; // privremeno
 			spacePressed = false;
 		}
+
+		// !!!
+		closestDistance = filterAsteroids(new ClosestDistanceComparator(player.getPos()), 3);
+		closestAngle = filterAsteroids(new ClosestAngleComparator(player), 3);
+		// !!!
 	}
 
 	public Player getPlayer() {
@@ -145,6 +162,24 @@ public class Game implements Drawable {
 			asteroid.draw(gc);
 			
 		}
+		// !!!
+		// samo da najblizi asteroidi budu vizualno oznaceni
+		if (closestDistance != null) {
+			for (Asteroid a: closestDistance) {
+				gc.setStroke(Paint.valueOf("RED"));
+				a.draw(gc);
+				gc.setStroke(Paint.valueOf("WHITE"));
+			}
+		}
+
+		if (closestAngle != null) {
+			for (Asteroid a: closestAngle) {
+				gc.setStroke(Paint.valueOf("BLUE"));
+				a.draw(gc);
+				gc.setStroke(Paint.valueOf("WHITE"));
+			}
+		}
+		// !!!
 		if(bullet != null) {
 			bullet.draw(gc);
 		}
@@ -159,3 +194,4 @@ public class Game implements Drawable {
 		System.out.println(game.score);
 	}
 }
+// mvn exec:java -Dexec.mainClass="hr.fer.projektR.app.AsteroidsGame"

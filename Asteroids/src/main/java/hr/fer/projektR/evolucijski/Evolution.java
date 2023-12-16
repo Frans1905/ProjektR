@@ -1,9 +1,7 @@
 package hr.fer.projektR.evolucijski;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.DoubleStream;
 
 public class Evolution{
 	private List<Jedinka> generation, sideGeneration;

@@ -42,5 +42,4 @@ public class GameObject implements Drawable {
 	@Override
 	public void draw(GraphicsContext gc) {
 	}
-	
 }

@@ -3,13 +3,12 @@ package hr.fer.projektR.game;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import javafx.scene.canvas.GraphicsContext;
 
 public class Asteroid extends GameObject{
 	private int nSize;
-	private static final int radius = 20;
-	public static final int maxSize = 4; // !
+	private static final int RADIUS = 20;
+	public static final int MAX_SIZE = 4; // !
 	public Asteroid(Vector2D pos, Vector2D speed, int size) {
 		super(pos, speed);
 		nSize = size;
@@ -21,7 +20,7 @@ public class Asteroid extends GameObject{
 	}
 	
 	public int size() {
-		return nSize * radius;
+		return nSize * RADIUS;
 	}
 	
 	public int getSize() {
