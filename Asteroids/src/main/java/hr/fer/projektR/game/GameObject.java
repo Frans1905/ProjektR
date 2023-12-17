@@ -42,4 +42,11 @@ public class GameObject implements Drawable {
 	@Override
 	public void draw(GraphicsContext gc) {
 	}
+	public double gameDistance(GameObject o) {
+		double xDistance = Math.abs(getPos().x - o.getPos().x);
+		xDistance = Math.min(xDistance, Game.W - xDistance);
+		double yDistance = Math.abs(getPos().y - o.getPos().y);
+		yDistance = Math.min(yDistance, Game.H - yDistance);
+		return yDistance*yDistance + xDistance*xDistance;
+	}
 }
