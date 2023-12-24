@@ -59,7 +59,7 @@ public class Matrix {
 			}
 		}
 	}
-	private void fillWith(double[][] data) {
+	public void fillWith(double[][] data) {
 		if (data.length<1 || !checkDim(data.length, data[0].length)) throw new MatrixSizeException();
 		for (int i = 0; i < nrow; i++) {
 			for (int j = 0; j < ncol; j++) {

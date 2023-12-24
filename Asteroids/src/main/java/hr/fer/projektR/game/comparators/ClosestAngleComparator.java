@@ -43,7 +43,7 @@ public class ClosestAngleComparator implements Comparator<GameObject> {
         if (angleDistance2 >= Math.PI) {
             angleDistance2 = 2 * Math.PI - angleDistance2;
         }
-
+        
         return (int) (16 * angleDistance1 - 16 * angleDistance2);
     }
     

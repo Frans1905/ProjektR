@@ -51,6 +51,7 @@ public class Asteroid extends GameObject{
 	@Override
 	public void draw(GraphicsContext gc) {
 		gc.strokeOval(getPos().x-size(), getPos().y-size(), 2*size(), 2*size() );
+		
 		super.draw(gc);
 	}
 }

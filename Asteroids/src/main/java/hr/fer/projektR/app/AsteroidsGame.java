@@ -35,7 +35,7 @@ public class AsteroidsGame extends Application {
 	    gc.setFill( Color.BLACK );
 	    gc.setStroke(Color.WHITE);
 	    long startNanoTime = System.nanoTime();
-//	    asteroids.testGame(); BEZ ASTEROIDA
+	    asteroids.testGame(); //BEZ ASTEROIDA
 	    AtomicBoolean canShoot = new AtomicBoolean(true);
 	    new AnimationTimer(){
 	        public void handle(long currentNanoTime)

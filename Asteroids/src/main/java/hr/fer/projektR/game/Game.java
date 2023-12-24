@@ -6,13 +6,14 @@ import java.util.List;
 
 import hr.fer.projektR.game.comparators.ClosestAngleComparator;
 import hr.fer.projektR.game.comparators.ClosestDistanceComparator;
+import hr.fer.projektR.game.comparators.DangerComparator;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
 
 public class Game implements Drawable {
 	public static final int W=960, H=760;
 	public static final double DT = 10; // ms
-	private static final int MAX_ASTEROID_MATERIAL = 50;
+	private static final int MAX_ASTEROID_MATERIAL = 100;
 	private boolean wPressed;
 	private boolean aPressed;
 	private boolean dPressed;
@@ -26,13 +27,15 @@ public class Game implements Drawable {
 	List<Asteroid> closestDistance;
 	List<Asteroid> closestAngle;
 	// !!!
-
+	private boolean gameOver;
+//	private int tmptimer;
+	
 	public Game() {
 		asteroids = new LinkedList<>();
 		newGame();
 	}
 	
-	private void newGame() {
+	public void newGame() {
 		player = new Player(W/2, H/2);
 		asteroids.clear();
 		spawnAsteroids(10); // !
@@ -41,6 +44,10 @@ public class Game implements Drawable {
 		aPressed = false;
 		dPressed = false;
 		spacePressed = false;
+		gameOver = false;
+		
+//		tmptimer = 0;
+	
 	}
 
 	public List<Asteroid> filterAsteroids(Comparator<? super Asteroid> c, int n) {
@@ -49,13 +56,13 @@ public class Game implements Drawable {
 	}
 	
 	private void setAsteroidAlarm() {
-		asteroidAlarm = (int)Math.random() * 50 + 100;
+		asteroidAlarm = (int)Math.random() * 3000 + 1000;
 	}
 	
 	public void testGame() {
 		newGame();
 		asteroids.clear();
-//		asteroids.add(new Asteroid(W/2,100,0,0,2));
+		asteroids.add(new Asteroid(W/2, 300, 0, 0, 1));
 	}
 	
 	private void spawnAsteroids(int number) {
@@ -81,11 +88,15 @@ public class Game implements Drawable {
 					y = Math.random() * H;
 					break;
 			}
-			Vector2D speed = Vector2D.I.rotate(Math.random() * 2 * Math.PI).scale(Math.random() * 25 + 50); // !
+			Vector2D pos = new Vector2D(x, y);
+			Vector2D speed = Vector2D.I.rotate(Math.random() * 2 * Math.PI).scale(Math.random() * 50 + 50);				
+			if (i == 0) {
+				speed = Vector2D.subVector2d(player.getPos(), pos).unit().scale(100);
+			}
 			int size = 1<<((int) (Math.random() * 2.99)) ;
-			System.out.println(asteroids.size());
+//			System.out.println(asteroids.size());
 			if (asteroids.size() < MAX_ASTEROID_MATERIAL)
-				asteroids.add(new Asteroid(new Vector2D(x, y), speed, size));
+				asteroids.add(new Asteroid(pos, speed, size));
 		}
 	}
 
@@ -104,6 +115,7 @@ public class Game implements Drawable {
 
 	public void step() {
 		//check input
+//		tmptimer++;
 		player.setForce(false);
 		if (wPressed) {
 			player.setForce(true);
@@ -121,7 +133,7 @@ public class Game implements Drawable {
 		
 		if (asteroidAlarm < 0) {
 			setAsteroidAlarm();
-			spawnAsteroids(1);
+			spawnAsteroids(5);
 		}asteroidAlarm--;
 
 		player.move(DT/1000);
@@ -129,7 +141,8 @@ public class Game implements Drawable {
 			asteroid.move(DT/1000);
 			if (player.isHitBy(asteroid)) {
 				//System.exit(1); // privremeno
-				newGame();
+				gameOver = true;
+//				System.out.println(tmptimer);
 				return;
 			}
 		}
@@ -141,10 +154,7 @@ public class Game implements Drawable {
 			spacePressed = false;
 		}
 
-		// !!!
-		closestDistance = filterAsteroids(new ClosestDistanceComparator(player.getPos()), 3);
-		closestAngle = filterAsteroids(new ClosestAngleComparator(player), 3);
-		// !!!
+		
 	}
 
 	public Player getPlayer() {
@@ -157,27 +167,34 @@ public class Game implements Drawable {
 
 	@Override
 	public void draw(GraphicsContext gc) {
+		// !!!
+//		closestDistance = filterAsteroids(new ClosestDistanceComparator(player), Math.min(asteroids.size(), 3));
+//		closestAngle = filterAsteroids(new ClosestAngleComparator(player), Math.min(asteroids.size(), 3));
+		// !!!
 		player.draw(gc);
-		for (Asteroid asteroid: asteroids) {
-			asteroid.draw(gc);
-			
-		}
+//		for (Asteroid asteroid: asteroids) {a
 		// !!!
 		// samo da najblizi asteroidi budu vizualno oznaceni
-		if (closestDistance != null) {
-			for (Asteroid a: closestDistance) {
-				gc.setStroke(Paint.valueOf("RED"));
-				a.draw(gc);
-				gc.setStroke(Paint.valueOf("WHITE"));
-			}
-		}
-
-		if (closestAngle != null) {
-			for (Asteroid a: closestAngle) {
-				gc.setStroke(Paint.valueOf("BLUE"));
-				a.draw(gc);
-				gc.setStroke(Paint.valueOf("WHITE"));
-			}
+//		if (closestDistance != null) {
+//			for (Asteroid a: closestDistance) {
+//				gc.setStroke(Paint.valueOf("RED"));
+//				a.draw(gc);
+//				gc.setStroke(Paint.valueOf("WHITE"));
+//			}
+//		}
+//
+//		if (closestAngle != null) {
+//			for (Asteroid a: closestAngle) {
+//				gc.setStroke(Paint.valueOf("BLUE"));
+//				a.draw(gc);
+//				gc.setStroke(Paint.valueOf("WHITE"));
+//			}
+//		}
+		List<Asteroid> dangerous =  filterAsteroids((new DangerComparator(player)).reversed(), Math.min(asteroids.size(), 5));
+		for (Asteroid a: dangerous) {
+			gc.setStroke(Paint.valueOf("BLUE"));
+			a.draw(gc);
+			gc.setStroke(Paint.valueOf("WHITE"));
 		}
 		// !!!
 		if(bullet != null) {
@@ -187,11 +204,48 @@ public class Game implements Drawable {
 		gc.strokeText("Score: " + String.valueOf(score),100,100);
 	}
 	public static void main(String[] args) {
-		Game game = new Game();
-		game.testGame();
-		game.spaceInput();
-		game.step();
-		System.out.println(game.score);
+//		Game game = new Game();
+//		game.testGame();
+//		game.spaceInput();
+//		game.step();
+//		System.out.println(game.score);
+	}
+	
+	public double[] getData() {
+		double[] data = new double[28];
+		int i = 0;
+		data[i++] = player.getOrient();
+		data[i++] = player.getForceVector().x;
+		data[i++] = player.getForceVector().y;
+		List<Asteroid> dangerous =  filterAsteroids((new DangerComparator(player)).reversed(), Math.min(asteroids.size(), 5));
+		for (Asteroid asteroid : dangerous) {
+			Vector2D relativePos = Vector2D.subVector2d(player.getPos(),asteroid.getPos());
+			Vector2D relativeSpeed = Vector2D.addVector2d(asteroid.getSpeed(), player.getSpeed());
+			data[i++] = relativePos.x;
+			data[i++] = relativePos.y;
+			data[i++] = relativeSpeed.x;
+			data[i++] = relativeSpeed.y;
+			data[i++] = asteroid.size();
+		}
+		if (asteroids.size() < 5) {
+			while (i < 25) {
+				data[i++] = Double.POSITIVE_INFINITY;
+				data[i++] = Double.POSITIVE_INFINITY;
+				data[i++] = 0;
+				data[i++] = 0;
+				data[i++] = 0;				
+			}
+		}
+		return data;
+	}
+	
+	public boolean isOver() {
+		return gameOver;
+	}
+	public long getScore() {
+		return score;
 	}
 }
 // mvn exec:java -Dexec.mainClass="hr.fer.projektR.app.AsteroidsGame"
+
+

@@ -11,9 +11,7 @@ public class Vector extends Matrix {
 	public Vector(double[] data) {
 		super(data.length,1);
 		n = data.length;
-		for (int i = 0; i < n; i++) {
-			super.matrix[i][0] = data[i];
-		}
+		fillWith(data);
 	}
 
 	public Vector(Vector v) {
@@ -22,5 +20,13 @@ public class Vector extends Matrix {
 	}
 	public int size() {
 		return n;
+	}
+	
+	public void fillWith(double[] data) {
+		if (data.length != n) throw new MatrixSizeException();
+		for (int i = 0; i < n; i++) {
+			super.matrix[i][0] = data[i];
+		}
+		
 	}
 }

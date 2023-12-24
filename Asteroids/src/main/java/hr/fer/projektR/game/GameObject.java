@@ -47,6 +47,6 @@ public class GameObject implements Drawable {
 		xDistance = Math.min(xDistance, Game.W - xDistance);
 		double yDistance = Math.abs(getPos().y - o.getPos().y);
 		yDistance = Math.min(yDistance, Game.H - yDistance);
-		return yDistance*yDistance + xDistance*xDistance;
+		return Math.sqrt(yDistance*yDistance + xDistance*xDistance);
 	}
 }
