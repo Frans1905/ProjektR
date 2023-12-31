@@ -2,7 +2,7 @@ package hr.fer.projektR.app;
 
 import hr.fer.projektR.game.Game;
 import hr.fer.projektR.math.Vector;
-import hr.fer.projektR.neuralnet.NeuralNetowrkAsteroids;
+import hr.fer.projektR.neuralnet.NeuralNetworkAsteroids;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.*;
@@ -14,22 +14,22 @@ import java.io.*;
 
 public class AsteroidsGameAI extends Application {
 	private Game game;
-    private NeuralNetowrkAsteroids network;
+    private NeuralNetworkAsteroids network;
 	boolean keyA = false, keyD = false, keyW = false, keySpace=false;
 	
     public AsteroidsGameAI() {
 		game = new Game();
-        loadNetwork();
+        loadNetwork("src/main/resources/.NeuralNetworkAsteroids1000");
 	}
 
-    private void loadNetwork() {
+    private void loadNetwork(String name) {
         try {   
             // Reading the object from a file
-            FileInputStream file = new FileInputStream("NeuralNetworkFile");
+            FileInputStream file = new FileInputStream(name);
             ObjectInputStream in = new ObjectInputStream(file);
              
             // Method for deserialization of object
-            network = (NeuralNetowrkAsteroids)in.readObject();
+            network = (NeuralNetworkAsteroids)in.readObject();
              
             in.close();
             file.close();
@@ -89,7 +89,7 @@ public class AsteroidsGameAI extends Application {
                             e.printStackTrace();
                         }
                     }
-                }	            
+                }
 	        }
 
 	    }.start();

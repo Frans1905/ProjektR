@@ -1,7 +1,7 @@
 package hr.fer.projektR.evolucijski;
 
 
-public interface Jedinka {
+public interface Jedinka extends java.io.Serializable {
 	void fromParents(Jedinka parent1, Jedinka parent2);
 	void mutate();
 	void copy(Jedinka source);

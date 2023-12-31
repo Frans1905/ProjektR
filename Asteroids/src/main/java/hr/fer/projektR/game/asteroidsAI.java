@@ -1,20 +1,19 @@
 package hr.fer.projektR.game;
 
 import hr.fer.projektR.evolucijski.Evolution;
-import hr.fer.projektR.evolucijski.Jedinka;
 import hr.fer.projektR.evolucijski.JedinkaFactroy;
 import hr.fer.projektR.math.Vector;
-import hr.fer.projektR.neuralnet.NeuralNetowrkAsteroids;
+import hr.fer.projektR.neuralnet.NeuralNetworkAsteroids;
 import hr.fer.projektR.neuralnet.NeuralNetwork;
 import java.io.*;
 
 public class asteroidsAI {
 
 	public static void main(String[] args) {
-		JedinkaFactroy fact = new JedinkaFactroy() {
+		JedinkaFactroy<NeuralNetworkAsteroids> fact = new JedinkaFactroy<NeuralNetworkAsteroids>() {
 			@Override
-			public Jedinka create() {
-				return new NeuralNetowrkAsteroids(28,40,40,4);
+			public NeuralNetworkAsteroids create() {
+				return new NeuralNetworkAsteroids(28,40,40,16,4);
 			}
 		};
 //		NeuralNetworkSin net = (NeuralNetworkSin) fact.create();
@@ -24,10 +23,10 @@ public class asteroidsAI {
 //			System.out.println(l.getBiases());
 //			System.out.println();
 //		}
-		Evolution darwin = new Evolution(30, fact);
+		Evolution<NeuralNetworkAsteroids> darwin = new Evolution<NeuralNetworkAsteroids>(40, fact);
 		Vector in = new Vector(28);
 		// System.out.println(darwin.run(20000, 1, 10000)-1);
-		System.out.println(darwin.run(20000, 1, 2000)-1);
+		System.out.println(darwin.run(20000, 1, 10000)-1);
 		Game game = new Game();
 		game.newGame();
 		while (!game.isOver()) {
@@ -44,14 +43,14 @@ public class asteroidsAI {
 				game.step();
 			}
 		}
-		saveNetwork((NeuralNetowrkAsteroids) darwin.getBest());
+		saveObject((NeuralNetworkAsteroids) darwin.getBest(), "src/main/resources/NeuralNetworkFile");
 		System.out.println(game.getScore());
 	}
 
-	private static void saveNetwork(NeuralNetowrkAsteroids best) {
+	public static <T extends Serializable> void saveObject (T best, String name) {
 		try {   
         	//Saving of object in a file
-            FileOutputStream file = new FileOutputStream("NeuralNetworkFile");
+            FileOutputStream file = new FileOutputStream(name);
             ObjectOutputStream out = new ObjectOutputStream(file);
              
             // Method for serialization of object

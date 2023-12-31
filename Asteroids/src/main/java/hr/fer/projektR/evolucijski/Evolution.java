@@ -3,19 +3,21 @@ package hr.fer.projektR.evolucijski;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Evolution{
-	private List<Jedinka> generation, sideGeneration;
+import hr.fer.projektR.game.asteroidsAI;
+
+public class Evolution<T extends Jedinka> {
+	private List<T> generation, sideGeneration;
 	private int generationSize;
 	private double[] goodnes;
 	private double goodnesSum, minGoodnes;
 	private int best;
-	public Evolution(int n, JedinkaFactroy fact) {
+	public Evolution(int n, JedinkaFactroy<? extends T> fact) {
 		this.generationSize = n;
-		generation = new LinkedList<Jedinka>();
-		sideGeneration = new LinkedList<Jedinka>();
+		generation = new LinkedList<T>();
+		sideGeneration = new LinkedList<T>();
 		goodnes = new double[n];
 		for (int i = 0; i < n; i++) {
-			Jedinka jed2, jed3;
+			T jed2, jed3;
 			jed2 = fact.create();
 			jed3 = fact.create();
 			jed2.randomize();
@@ -81,6 +83,9 @@ public class Evolution{
 			nextGeneration();
 			if (k%100 == 0) {
 				System.out.println(String.format("%.7f", goodnes[best]));
+			}
+			if (k % 1000 == 0) {
+				asteroidsAI.<T>saveObject(generation.get(best), "src/main/resources/" + generation.get(best).getClass().toString().substring(generation.get(best).getClass().toString().lastIndexOf(".") + 1) + k);
 			}
 		}
 		return k;

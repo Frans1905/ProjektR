@@ -5,17 +5,17 @@ import hr.fer.projektR.evolucijski.Jedinka;
 import hr.fer.projektR.game.Game;
 import hr.fer.projektR.math.Vector;
 
-public class NeuralNetowrkAsteroids extends NeuralNetwork  implements java.io.Serializable {
+public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Serializable {
 	private Random rand;
 	private Game model;
 	
-	public NeuralNetowrkAsteroids(int... c) {
+	public NeuralNetworkAsteroids(int... c) {
 		super(c);
 		rand = new Random();
 		model = new Game();
 	}
 
-	public NeuralNetowrkAsteroids(NeuralNetwork n) {
+	public NeuralNetworkAsteroids(NeuralNetwork n) {
 		super(n);
 		rand = new Random();
 	}
@@ -43,7 +43,7 @@ public class NeuralNetowrkAsteroids extends NeuralNetwork  implements java.io.Se
 		final int sekundi = 45;
 		final Vector in = new Vector(28);
 		double fit = 0;
-		for (int k = 0; k < 5; k++) {
+		for (int k = 0; k < 8; k++) {
 			
 			model.newGame();
 			int i = 0, j = 0;
