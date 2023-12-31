@@ -8,12 +8,11 @@ import hr.fer.projektR.neuralnet.NeuralNetwork;
 import java.io.*;
 
 public class asteroidsAI {
-
 	public static void main(String[] args) {
 		JedinkaFactroy<NeuralNetworkAsteroids> fact = new JedinkaFactroy<NeuralNetworkAsteroids>() {
 			@Override
 			public NeuralNetworkAsteroids create() {
-				return new NeuralNetworkAsteroids(28,40,40,16,4);
+				return new NeuralNetworkAsteroids(28,56,28,4);
 			}
 		};
 //		NeuralNetworkSin net = (NeuralNetworkSin) fact.create();
@@ -23,10 +22,10 @@ public class asteroidsAI {
 //			System.out.println(l.getBiases());
 //			System.out.println();
 //		}
-		Evolution<NeuralNetworkAsteroids> darwin = new Evolution<NeuralNetworkAsteroids>(40, fact);
+		Evolution<NeuralNetworkAsteroids> darwin = new Evolution<NeuralNetworkAsteroids>(120, fact);
 		Vector in = new Vector(28);
-		// System.out.println(darwin.run(20000, 1, 10000)-1);
-		System.out.println(darwin.run(20000, 1, 10000)-1);
+		// System.out.println(darwin.run(20000, 1, 10000)-1); 
+		System.out.println(darwin.run(20000, 1, 20000)-1);
 		Game game = new Game();
 		game.newGame();
 		while (!game.isOver()) {
@@ -66,5 +65,4 @@ public class asteroidsAI {
             System.out.println("IOException is caught");
         }
 	}
-
 }

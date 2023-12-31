@@ -17,7 +17,7 @@ public class NeuralNetworkSin extends NeuralNetwork {
 	}
 	@Override
 	public void fromParents(Jedinka parent1, Jedinka parent2) {
-		super.fromParents((NeuralNetwork)parent1, (NeuralNetwork)parent2,0.1);
+		super.fromParentsAlpha1((NeuralNetwork)parent1, (NeuralNetwork)parent2,0.1);
 	}
 
 	@Override

@@ -22,8 +22,12 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 
 	@Override
 	public void fromParents(Jedinka parent1, Jedinka parent2) {
-		super.fromParents((NeuralNetwork)parent1, (NeuralNetwork)parent2,0.1);
+		// super.fromParentsAlpha1((NeuralNetwork)parent1, (NeuralNetwork)parent2,0.1);
+		// mutate();
+		
+		// ^ ILI v
 
+		super.fromParentsAlpha2((NeuralNetwork)parent1, (NeuralNetwork)parent2,0.10);
 	}
 
 	@Override
@@ -43,7 +47,7 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 		final int sekundi = 45;
 		final Vector in = new Vector(28);
 		double fit = 0;
-		for (int k = 0; k < 8; k++) {
+		for (int k = 0; k < 12; k++) {
 			
 			model.newGame();
 			int i = 0, j = 0;
@@ -61,7 +65,7 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 					model.step();
 				}
 			}
-			fit += model.getScore()/50 + (10.0*i+1.0*j)/10; 
+			fit += model.getScore()/25 + (10.0*i+1.0*j)/10; 
 			
 		}
 		return fit/5;

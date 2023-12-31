@@ -1,5 +1,6 @@
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Drawable.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Player.java
+D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\neuralnet\NeuralNetworkAsteroids.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\math\Matrix.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Vector2D.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\asteroidsAI.java
@@ -12,7 +13,6 @@ D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\app\Aster
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\math\MatrixSizeException.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\neuralnet\NeuralNetwork.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\app\AsteroidsGameAI.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\neuralnet\NeuralNetowrkAsteroids.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Asteroid.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Game.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\neuralnet\Layer.java

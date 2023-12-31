@@ -119,6 +119,8 @@ public class AsteroidsGame extends Application {
 		// ako zelite igrati igru
 		// launch(args);
 
+		// ^ ILI v
+
 		// ako zelite gledati kako neuronska mreza igra igru
 		AsteroidsGameAI.launchGame(args);
 	}

@@ -49,10 +49,21 @@ public abstract class NeuralNetwork implements Jedinka, java.io.Serializable {
 				layers[i].getBiases().applyToAll((t) -> (Math.random()<relative)?t+delat:delat);				
 			}
 		}
+	}
 
+	public double oneMutation(double alpha, double bigMutation) {
+		if (Math.random() < alpha) {
+			if (Math.random() < bigMutation) {
+				return bigRandom() * 6.0;
+			}
+			else {
+				return smallRandom() * 1.0;
+			}
+		}
+		return 0;
 	}
 	
-	public void fromParents(NeuralNetwork first, NeuralNetwork second, double alfa) {
+	public void fromParentsAlpha1(NeuralNetwork first, NeuralNetwork second, double alfa) {
 		for (int i = 0; i < layers.length; i++) {
 			for (int j = 0; j < layers[i].getWeights().getNrow(); j++) {
 				for (int k = 0; k < layers[i].getWeights().getNcol(); k++) {
@@ -66,7 +77,23 @@ public abstract class NeuralNetwork implements Jedinka, java.io.Serializable {
 				double low =Math.min(first.getLayers()[i].getBiases().matrix[j][0], second.getLayers()[i].getBiases().matrix[j][0]) - alfa*len;
 				layers[i].getBiases().matrix[j][0] = len*(1+2*alfa)*Math.random()+low;
 			}
-			
+		}
+	}
+
+	public void fromParentsAlpha2(NeuralNetwork first, NeuralNetwork second, double alfa) {
+		for (int i = 0; i < layers.length; i++) {
+			for (int j = 0; j < layers[i].getWeights().getNrow(); j++) {
+				for (int k = 0; k < layers[i].getWeights().getNcol(); k++) {
+					double len = Math.abs(first.getLayers()[i].getWeights().matrix[j][k] - second.getLayers()[i].getWeights().matrix[j][k]);
+					double low =Math.min(first.getLayers()[i].getWeights().matrix[j][k], second.getLayers()[i].getWeights().matrix[j][k]) - alfa*len;
+					layers[i].getWeights().matrix[j][k] = len*(1+2*alfa)*Math.random()+low + oneMutation(1.0 * alfa, 0.1);
+				}
+			}
+			for (int j = 0; j < layers[i].getWeights().getNrow(); j++) {
+				double len = Math.abs(first.getLayers()[i].getBiases().matrix[j][0] - second.getLayers()[i].getBiases().matrix[j][0]);
+				double low =Math.min(first.getLayers()[i].getBiases().matrix[j][0], second.getLayers()[i].getBiases().matrix[j][0]) - alfa*len;
+				layers[i].getBiases().matrix[j][0] = len*(1+2*alfa)*Math.random()+low + oneMutation(0.6 * alfa, 0.08);
+			}
 		}
 	}
 	

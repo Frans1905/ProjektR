@@ -2,6 +2,7 @@ package hr.fer.projektR.evolucijski;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Arrays;
 
 import hr.fer.projektR.game.asteroidsAI;
 
@@ -11,6 +12,8 @@ public class Evolution<T extends Jedinka> {
 	private double[] goodnes;
 	private double goodnesSum, minGoodnes;
 	private int best;
+	private double firstMedian = -1, firstBest = -1, firstWorst = -1;
+
 	public Evolution(int n, JedinkaFactroy<? extends T> fact) {
 		this.generationSize = n;
 		generation = new LinkedList<T>();
@@ -52,7 +55,7 @@ public class Evolution<T extends Jedinka> {
 			par2 = selectParent();
 //			System.out.println();
 			sideGeneration.get(i).fromParents(par1, par2);
-			sideGeneration.get(i).mutate();
+			// sideGeneration.get(i).mutate();
 		}
 		for (int i = 0; i < generationSize; i++) {
 			generation.get(i).copy(sideGeneration.get(i));
@@ -78,17 +81,47 @@ public class Evolution<T extends Jedinka> {
 	}
 	
 	public int run(double target, double tresh, int maxIter) {
+		
 		int k = 0;
+		System.out.println("------------------------------------------------------------");
 		while(target-goodnes[best]>tresh && k++ < maxIter) {
 			nextGeneration();
 			if (k%100 == 0) {
-				System.out.println(String.format("%.7f", goodnes[best]));
+				calculateAndPrintStatistics(k);
 			}
 			if (k % 1000 == 0) {
 				asteroidsAI.<T>saveObject(generation.get(best), "src/main/resources/" + generation.get(best).getClass().toString().substring(generation.get(best).getClass().toString().lastIndexOf(".") + 1) + k);
+				System.out.println("============================================================");
 			}
 		}
+
+		System.out.println("First generation:");
+		printStatistics(firstMedian, firstBest, firstWorst, 100);
+
 		return k;
+	}
+
+	private void printStatistics(double median, double bestOne, double worst, int k) {
+		System.out.println("Generation: " + k);
+		System.out.println("--------------------");
+		System.out.println("Median: " + median);
+		System.out.println("Best: " + String.format("%.7f", bestOne));
+		System.out.println("Worst: " + String.format("%.7f", worst));
+		System.out.println("------------------------------------------------------------");
+	}
+
+	private void calculateAndPrintStatistics(int k) {
+		double[] sortedGoodnes = Arrays.copyOf(goodnes, goodnes.length);
+		Arrays.sort(sortedGoodnes);
+
+		printStatistics(sortedGoodnes[sortedGoodnes.length / 2], goodnes[best], sortedGoodnes[0], k);
+
+		// first print
+		if (firstBest == -1 && firstMedian == -1 && firstWorst == -1) {
+			firstBest = goodnes[best];
+			firstMedian = sortedGoodnes[sortedGoodnes.length / 2];
+			firstWorst = sortedGoodnes[0];
+		}
 	}
 	
 	public void testPrint() {
