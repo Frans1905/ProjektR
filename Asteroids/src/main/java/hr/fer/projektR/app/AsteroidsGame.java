@@ -35,7 +35,7 @@ public class AsteroidsGame extends Application {
 	    gc.setFill( Color.BLACK );
 	    gc.setStroke(Color.WHITE);
 	    long startNanoTime = System.nanoTime();
-	    asteroids.testGame(); //BEZ ASTEROIDA
+	    // asteroids.testGame(); //BEZ ASTEROIDA
 	    AtomicBoolean canShoot = new AtomicBoolean(true);
 	    new AnimationTimer(){
 	        public void handle(long currentNanoTime)
@@ -112,14 +112,15 @@ public class AsteroidsGame extends Application {
                     }
                 });
 
-	    
-	    
 	    theStage.show();
 	}
 
 	public static void main(String[] args) {
-		launch(args);
+		// ako zelite igrati igru
+		// launch(args);
 
+		// ako zelite gledati kako neuronska mreza igra igru
+		AsteroidsGameAI.launchGame(args);
 	}
 
 }

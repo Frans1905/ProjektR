@@ -3,7 +3,7 @@ package hr.fer.projektR.neuralnet;
 import hr.fer.projektR.evolucijski.Jedinka;
 import hr.fer.projektR.math.Vector;
 
-public abstract class NeuralNetwork implements Jedinka {
+public abstract class NeuralNetwork implements Jedinka, java.io.Serializable {
 	private Layer[] layers;
 	
 	public NeuralNetwork(Layer[] layers) {

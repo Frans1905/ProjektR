@@ -6,7 +6,7 @@ import hr.fer.projektR.evolucijski.JedinkaFactroy;
 import hr.fer.projektR.math.Vector;
 import hr.fer.projektR.neuralnet.NeuralNetowrkAsteroids;
 import hr.fer.projektR.neuralnet.NeuralNetwork;
-import hr.fer.projektR.neuralnet.NeuralNetworkSin;
+import java.io.*;
 
 public class asteroidsAI {
 
@@ -25,8 +25,9 @@ public class asteroidsAI {
 //			System.out.println();
 //		}
 		Evolution darwin = new Evolution(30, fact);
-		Vector in = new Vector(27);
-		System.out.println(darwin.run(20000, 1, 10000)-1);
+		Vector in = new Vector(28);
+		// System.out.println(darwin.run(20000, 1, 10000)-1);
+		System.out.println(darwin.run(20000, 1, 2000)-1);
 		Game game = new Game();
 		game.newGame();
 		while (!game.isOver()) {
@@ -43,7 +44,28 @@ public class asteroidsAI {
 				game.step();
 			}
 		}
+		saveNetwork((NeuralNetowrkAsteroids) darwin.getBest());
 		System.out.println(game.getScore());
+	}
+
+	private static void saveNetwork(NeuralNetowrkAsteroids best) {
+		try {   
+        	//Saving of object in a file
+            FileOutputStream file = new FileOutputStream("NeuralNetworkFile");
+            ObjectOutputStream out = new ObjectOutputStream(file);
+             
+            // Method for serialization of object
+            out.writeObject(best);
+             
+            out.close();
+            file.close();
+
+			System.out.println("Serialized!");
+        }
+        catch(IOException ex) {
+			ex.printStackTrace();
+            System.out.println("IOException is caught");
+        }
 	}
 
 }

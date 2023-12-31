@@ -1,18 +1,17 @@
 package hr.fer.projektR.neuralnet;
 
 import java.util.Random;
-
 import hr.fer.projektR.evolucijski.Jedinka;
 import hr.fer.projektR.game.Game;
 import hr.fer.projektR.math.Vector;
 
-public class NeuralNetowrkAsteroids extends NeuralNetwork {
+public class NeuralNetowrkAsteroids extends NeuralNetwork  implements java.io.Serializable {
 	private Random rand;
 	private Game model;
+	
 	public NeuralNetowrkAsteroids(int... c) {
 		super(c);
 		rand = new Random();
-
 		model = new Game();
 	}
 

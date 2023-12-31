@@ -3,14 +3,11 @@ package hr.fer.projektR.game;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-
-import hr.fer.projektR.game.comparators.ClosestAngleComparator;
-import hr.fer.projektR.game.comparators.ClosestDistanceComparator;
 import hr.fer.projektR.game.comparators.DangerComparator;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
 
-public class Game implements Drawable {
+public class Game implements Drawable, java.io.Serializable {
 	public static final int W=960, H=760;
 	public static final double DT = 10; // ms
 	private static final int MAX_ASTEROID_MATERIAL = 100;
@@ -153,8 +150,6 @@ public class Game implements Drawable {
 			this.score += size * 50; // privremeno
 			spacePressed = false;
 		}
-
-		
 	}
 
 	public Player getPlayer() {
@@ -190,6 +185,12 @@ public class Game implements Drawable {
 //				gc.setStroke(Paint.valueOf("WHITE"));
 //			}
 //		}
+
+
+		for (Asteroid asteroid: asteroids) {
+			asteroid.draw(gc);
+		}
+
 		List<Asteroid> dangerous =  filterAsteroids((new DangerComparator(player)).reversed(), Math.min(asteroids.size(), 5));
 		for (Asteroid a: dangerous) {
 			gc.setStroke(Paint.valueOf("BLUE"));

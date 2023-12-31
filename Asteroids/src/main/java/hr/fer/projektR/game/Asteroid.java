@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import javafx.scene.canvas.GraphicsContext;
 
-public class Asteroid extends GameObject{
+public class Asteroid extends GameObject implements java.io.Serializable {
 	private int nSize;
 	private static final int RADIUS = 20;
 	public static final int MAX_SIZE = 4; // !
