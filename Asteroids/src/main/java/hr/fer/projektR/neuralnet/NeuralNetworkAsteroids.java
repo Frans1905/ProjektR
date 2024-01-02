@@ -12,17 +12,13 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 	private int numberOfRepetitions;
 	
 	public NeuralNetworkAsteroids(int... c) {
-		super(c);
-		rand = new Random();
-		model = new Game();
-		alfa = 0.1;
-		numberOfRepetitions = 6;
+		this(6, 0.1, c);
 	}
 
 	public NeuralNetworkAsteroids(int numberOfRepetitions, double alfa, int... c) {
 		super(c);
 		rand = new Random();
-		model = new Game();
+		model = new Game((c[0] - 3) / 5);
 		this.alfa = alfa;
 		this.numberOfRepetitions = numberOfRepetitions;
 	}
@@ -44,7 +40,7 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 
 	@Override
 	public void mutate() {
-		super.mutate(alfa,0.4,0.5);
+		super.mutate(alfa,0.16,0.5);
 	}
 
 	@Override
@@ -55,7 +51,7 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 	@Override
 	public double fitness() {
 		final int sekundi = 45;
-		final Vector in = new Vector(28);
+		final Vector in = new Vector(getLayers()[0].getWeights().getNcol());
 		double fit = 0;
 		for (int k = 0; k < numberOfRepetitions; k++) {
 			

@@ -130,8 +130,8 @@ public class Evolution<T extends Jedinka> {
 		int k = 0;
 		System.out.println("------------------------------------------------------------");
 		while(target-goodnes[best]>tresh && k++ < maxIter) {
+			nextGenerationOneParent();
 			// nextGeneration();
-			nextGeneration();
 			if (k%10 == 0 || k == 1) {
 				calculateAndPrintStatistics(k);
 			}

@@ -8,11 +8,13 @@ import hr.fer.projektR.neuralnet.NeuralNetwork;
 import java.io.*;
 
 public class asteroidsAI {
+	public static int asteroidsN = 4;
+	public static int vectorSize = 3 + asteroidsN * 5;
 	public static void main(String[] args) {
 		JedinkaFactroy<NeuralNetworkAsteroids> fact = new JedinkaFactroy<NeuralNetworkAsteroids>() {
 			@Override
 			public NeuralNetworkAsteroids create() {
-				return new NeuralNetworkAsteroids(8, 0.2, 28,56,28,4);
+				return new NeuralNetworkAsteroids(8, 0.6, vectorSize, 2 * vectorSize, vectorSize, 4);
 			}
 		};
 //		NeuralNetworkSin net = (NeuralNetworkSin) fact.create();
@@ -22,11 +24,11 @@ public class asteroidsAI {
 //			System.out.println(l.getBiases());
 //			System.out.println();
 //		}
-		Evolution<NeuralNetworkAsteroids> darwin = new Evolution<NeuralNetworkAsteroids>(1000, fact);
-		Vector in = new Vector(28);
+		Evolution<NeuralNetworkAsteroids> darwin = new Evolution<NeuralNetworkAsteroids>(800, fact);
+		Vector in = new Vector(vectorSize);
 		// System.out.println(darwin.run(20000, 1, 10000)-1); 
-		System.out.println(darwin.run(20000, 1, 200)-1);
-		Game game = new Game();
+		System.out.println(darwin.run(20000, 1, 250)-1);
+		Game game = new Game(asteroidsN);
 		game.newGame();
 		while (!game.isOver()) {
 			in.fillWith(game.getData());

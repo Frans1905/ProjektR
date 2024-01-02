@@ -41,11 +41,11 @@ public abstract class NeuralNetwork implements Jedinka, java.io.Serializable {
 	public void mutate(double alpha, double big, double relative) {
 		for(int i = 0; i < layers.length; i++) {
 			if (Math.random() < alpha) {
-				double delat = (Math.random() < big)?bigRandom()*8:smallRandom()*2;
+				double delat = (Math.random() < big)?bigRandom()*10:smallRandom()*2;
 				layers[i].getWeights().applyToAll((t) -> (Math.random()<alpha)?t+delat:delat);		
 			}
 			if (Math.random() < alpha) {
-				double delat = (Math.random() < big)?bigRandom()*8:smallRandom()*2;
+				double delat = (Math.random() < big)?bigRandom()*10:smallRandom()*2;
 				layers[i].getBiases().applyToAll((t) -> (Math.random()<relative)?t+delat:delat);				
 			}
 		}

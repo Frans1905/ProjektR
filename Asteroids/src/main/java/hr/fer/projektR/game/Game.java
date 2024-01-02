@@ -24,11 +24,18 @@ public class Game implements Drawable, java.io.Serializable {
 	List<Asteroid> closestDistance;
 	List<Asteroid> closestAngle;
 	// !!!
+	int asteroidsN;
+
 	private boolean gameOver;
 //	private int tmptimer;
 	
 	public Game() {
+		this(5);
+	}
+
+	public Game(int n) {
 		asteroids = new LinkedList<>();
+		asteroidsN = n;
 		newGame();
 	}
 	
@@ -191,7 +198,7 @@ public class Game implements Drawable, java.io.Serializable {
 			asteroid.draw(gc);
 		}
 
-		List<Asteroid> dangerous =  filterAsteroids((new DangerComparator(player)).reversed(), Math.min(asteroids.size(), 5));
+		List<Asteroid> dangerous =  filterAsteroids((new DangerComparator(player)).reversed(), Math.min(asteroids.size(), asteroidsN));
 		for (Asteroid a: dangerous) {
 			gc.setStroke(Paint.valueOf("BLUE"));
 			a.draw(gc);
@@ -213,12 +220,12 @@ public class Game implements Drawable, java.io.Serializable {
 	}
 	
 	public double[] getData() {
-		double[] data = new double[28];
+		double[] data = new double[3 + asteroidsN * 5];
 		int i = 0;
 		data[i++] = player.getOrient();
 		data[i++] = player.getForceVector().x;
 		data[i++] = player.getForceVector().y;
-		List<Asteroid> dangerous =  filterAsteroids((new DangerComparator(player)).reversed(), Math.min(asteroids.size(), 5));
+		List<Asteroid> dangerous =  filterAsteroids((new DangerComparator(player)).reversed(), Math.min(asteroids.size(), asteroidsN));
 		for (Asteroid asteroid : dangerous) {
 			Vector2D relativePos = Vector2D.subVector2d(player.getPos(),asteroid.getPos());
 			Vector2D relativeSpeed = Vector2D.addVector2d(asteroid.getSpeed(), player.getSpeed());
@@ -228,8 +235,8 @@ public class Game implements Drawable, java.io.Serializable {
 			data[i++] = relativeSpeed.y;
 			data[i++] = asteroid.size();
 		}
-		if (asteroids.size() < 5) {
-			while (i < 25) {
+		if (asteroids.size() < asteroidsN) {
+			while (i < 3 + asteroidsN * 5) {
 				data[i++] = Double.POSITIVE_INFINITY;
 				data[i++] = Double.POSITIVE_INFINITY;
 				data[i++] = 0;

@@ -16,10 +16,13 @@ public class AsteroidsGameAI extends Application {
 	private Game game;
     private NeuralNetworkAsteroids network;
 	boolean keyA = false, keyD = false, keyW = false, keySpace=false;
-	
+	public static int asteroidsN = 5;
+
     public AsteroidsGameAI() {
-		game = new Game();
-        loadNetwork("src/main/resources/NeuralNetworkAsteroids200");
+        loadNetwork("src/main/resources/NeuralNetworkAsteroids250");
+        asteroidsN = network.getLayers()[0].getWeights().getNcol() - 3;
+        asteroidsN /= 5;
+        game = new Game(asteroidsN);
 	}
 
     private void loadNetwork(String name) {
@@ -59,37 +62,99 @@ public class AsteroidsGameAI extends Application {
 	    gc.setTransform(t);
 	    gc.setFill( Color.BLACK );
 	    gc.setStroke(Color.WHITE);
-	    long startNanoTime = System.nanoTime();
+	    // long startNanoTime = System.nanoTime();
 	    // asteroids.testGame(); //BEZ ASTEROIDA
 	    // AtomicBoolean canShoot = new AtomicBoolean(true);
 	    new AnimationTimer(){
+            // long lastNanoTime = startNanoTime;
+            int j = 0;
+            boolean wPress = false, aPress = false, dPress = false;
+            // boolean skip = false;
+            // int skip = 2;
 	        public void handle(long currentNanoTime)
 	        {
-                Vector in = new Vector(28);
-                in.fillWith(game.getData());
-			    Vector m = network.process(in);
+                // if (skip != 0) {
+                //     skip--;
+                //     return;
+                // }
+                // skip += 2;
 
-                if (m.matrix[0][0] > 0.5) {
-                    game.spaceInput();
+                if (game.isOver()) {
+                    return;
                 }
 
-                boolean wPress = m.matrix[1][0] > 0.5, aPress = m.matrix[2][0] > 0.5, dPress = m.matrix[3][0] > 0.5;
-                for (int j = 0; j < 10 && !game.isOver(); j++) {
+                if (j % 10 == 0) {
+                    Vector in = new Vector(asteroidsN * 5 + 3);
+                    in.fillWith(game.getData());
+                    Vector m = network.process(in);
+
+                    if (m.matrix[0][0] > 0.5) {
+                        game.spaceInput();
+                    }
+
+                    wPress = m.matrix[1][0] > 0.5;
+                    aPress = m.matrix[2][0] > 0.5;
+                    dPress = m.matrix[3][0] > 0.5;
+                }
+                else {
                     if (wPress) game.wInput();
                     if (aPress) game.aInput();
                     if (dPress) game.dInput();
                     game.step();
                     gc.fillRect(0, 0, Game.W, Game.H);
                     game.draw(gc);
-                    long t = (currentNanoTime - startNanoTime);
-                    if (t/1000 < Game.DT/1000) {
-                        try {
-                            wait((long) (Game.DT - t/1e6),(int) (t%1000000));
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+
+                    // long t = (currentNanoTime - startNanoTime);
+                    // long t = (currentNanoTime - lastNanoTime);
+                    // System.out.println(t);
+                    // if (t/1000 < Game.DT/1) {
+                    //     System.out.println("Spavat!");
+                    //     try {
+                    //         wait((long) (Game.DT - t/1e6),(int) (t%1000000));
+                    //     } catch (InterruptedException e) {
+                    //         e.printStackTrace();
+                    //     }
+                    // }
+                    // lastNanoTime = currentNanoTime;
+                    if (j == 10) {
+                        j = 0;
                     }
                 }
+                j++;
+
+                // Vector in = new Vector(asteroidsN * 5 + 3);
+                // in.fillWith(game.getData());
+                // Vector m = network.process(in);
+
+                // if (m.matrix[0][0] > 0.5) {
+                //     game.spaceInput();
+                // }
+
+                // wPress = m.matrix[1][0] > 0.5;
+                // aPress = m.matrix[2][0] > 0.5;
+                // dPress = m.matrix[3][0] > 0.5;
+                
+                // for (int j = 0; j < 10 && !game.isOver(); j++) {
+                //     if (wPress) game.wInput();
+                //     if (aPress) game.aInput();
+                //     if (dPress) game.dInput();
+                //     game.step();
+                //     gc.fillRect(0, 0, Game.W, Game.H);
+                //     game.draw(gc);
+
+                //     // long t = (currentNanoTime - startNanoTime);
+                //     long t = (currentNanoTime - lastNanoTime);
+                //     System.out.println(t);
+                //     if (t/1000 < Game.DT/1) {
+                //         System.out.println("Spavat!");
+                //         try {
+                //             wait((long) (Game.DT - t/1e6),(int) (t%1000000));
+                //         } catch (InterruptedException e) {
+                //             e.printStackTrace();
+                //         }
+                //     }
+                //     lastNanoTime = currentNanoTime;
+                // }
 	        }
 
 	    }.start();
