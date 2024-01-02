@@ -19,7 +19,7 @@ public class AsteroidsGameAI extends Application {
 	
     public AsteroidsGameAI() {
 		game = new Game();
-        loadNetwork("src/main/resources/NeuralNetworkAsteroids1000");
+        loadNetwork("src/main/resources/NeuralNetworkAsteroids200");
 	}
 
     private void loadNetwork(String name) {

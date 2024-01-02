@@ -8,11 +8,23 @@ import hr.fer.projektR.math.Vector;
 public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Serializable {
 	private Random rand;
 	private Game model;
+	private double alfa;
+	private int numberOfRepetitions;
 	
 	public NeuralNetworkAsteroids(int... c) {
 		super(c);
 		rand = new Random();
 		model = new Game();
+		alfa = 0.1;
+		numberOfRepetitions = 6;
+	}
+
+	public NeuralNetworkAsteroids(int numberOfRepetitions, double alfa, int... c) {
+		super(c);
+		rand = new Random();
+		model = new Game();
+		this.alfa = alfa;
+		this.numberOfRepetitions = numberOfRepetitions;
 	}
 
 	public NeuralNetworkAsteroids(NeuralNetwork n) {
@@ -22,24 +34,22 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 
 	@Override
 	public void fromParents(Jedinka parent1, Jedinka parent2) {
-		// super.fromParentsAlpha1((NeuralNetwork)parent1, (NeuralNetwork)parent2,0.1);
+		// super.fromParentsAlpha1((NeuralNetwork)parent1, (NeuralNetwork)parent2, alfa);
 		// mutate();
 		
 		// ^ ILI v
 
-		super.fromParentsAlpha2((NeuralNetwork)parent1, (NeuralNetwork)parent2,0.10);
+		super.fromParentsAlpha2((NeuralNetwork)parent1, (NeuralNetwork)parent2, alfa);
 	}
 
 	@Override
 	public void mutate() {
-		super.mutate(0.1,0.8,0.5);
-
+		super.mutate(alfa,0.4,0.5);
 	}
 
 	@Override
 	public void copy(Jedinka source) {
 		copyFrom((NeuralNetwork) source);
-
 	}
 
 	@Override
@@ -47,7 +57,7 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 		final int sekundi = 45;
 		final Vector in = new Vector(28);
 		double fit = 0;
-		for (int k = 0; k < 12; k++) {
+		for (int k = 0; k < numberOfRepetitions; k++) {
 			
 			model.newGame();
 			int i = 0, j = 0;
@@ -65,7 +75,7 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 					model.step();
 				}
 			}
-			fit += model.getScore()/25 + (10.0*i+1.0*j)/10; 
+			fit += model.getScore()/20 + (10.0*i+1.0*j)/80; 
 			
 		}
 		return fit/5;
