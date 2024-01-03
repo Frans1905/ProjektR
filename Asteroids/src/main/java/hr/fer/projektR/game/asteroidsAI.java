@@ -14,7 +14,7 @@ public class asteroidsAI {
 		JedinkaFactroy<NeuralNetworkAsteroids> fact = new JedinkaFactroy<NeuralNetworkAsteroids>() {
 			@Override
 			public NeuralNetworkAsteroids create() {
-				return new NeuralNetworkAsteroids(8, 0.1, vectorSize, vectorSize, 4, 4);
+				return new NeuralNetworkAsteroids(8, 0.1, vectorSize, 24, 4);
 			}
 		};
 //		NeuralNetworkSin net = (NeuralNetworkSin) fact.create();
