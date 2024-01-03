@@ -3,11 +3,14 @@ package hr.fer.projektR.game;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+
+import hr.fer.projektR.game.comparators.ClosestAngleComparator;
+import hr.fer.projektR.game.comparators.ClosestDistanceComparator;
 import hr.fer.projektR.game.comparators.DangerComparator;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
 
-public class Game implements Drawable, java.io.Serializable {
+public class Game implements Drawable {
 	public static final int W=960, H=760;
 	public static final double DT = 10; // ms
 	private static final int MAX_ASTEROID_MATERIAL = 100;
@@ -24,18 +27,11 @@ public class Game implements Drawable, java.io.Serializable {
 	List<Asteroid> closestDistance;
 	List<Asteroid> closestAngle;
 	// !!!
-	int asteroidsN;
-
 	private boolean gameOver;
 //	private int tmptimer;
 	
 	public Game() {
-		this(5);
-	}
-
-	public Game(int n) {
 		asteroids = new LinkedList<>();
-		asteroidsN = n;
 		newGame();
 	}
 	
@@ -60,7 +56,7 @@ public class Game implements Drawable, java.io.Serializable {
 	}
 	
 	private void setAsteroidAlarm() {
-		asteroidAlarm = (int)Math.random() * 2000 + 1000;
+		asteroidAlarm = (int)Math.random() * 300 + 100;
 	}
 	
 	public void testGame() {
@@ -157,6 +153,8 @@ public class Game implements Drawable, java.io.Serializable {
 			this.score += size * 50; // privremeno
 			spacePressed = false;
 		}
+
+		
 	}
 
 	public Player getPlayer() {
@@ -174,7 +172,9 @@ public class Game implements Drawable, java.io.Serializable {
 //		closestAngle = filterAsteroids(new ClosestAngleComparator(player), Math.min(asteroids.size(), 3));
 		// !!!
 		player.draw(gc);
-//		for (Asteroid asteroid: asteroids) {a
+		for (Asteroid asteroid: asteroids) {
+			asteroid.draw(gc);
+		}
 		// !!!
 		// samo da najblizi asteroidi budu vizualno oznaceni
 //		if (closestDistance != null) {
@@ -192,13 +192,7 @@ public class Game implements Drawable, java.io.Serializable {
 //				gc.setStroke(Paint.valueOf("WHITE"));
 //			}
 //		}
-
-
-		for (Asteroid asteroid: asteroids) {
-			asteroid.draw(gc);
-		}
-
-		List<Asteroid> dangerous =  filterAsteroids((new DangerComparator(player)).reversed(), Math.min(asteroids.size(), asteroidsN));
+		List<Asteroid> dangerous =  filterAsteroids((new DangerComparator(player)).reversed(), Math.min(asteroids.size(), 5));
 		for (Asteroid a: dangerous) {
 			gc.setStroke(Paint.valueOf("BLUE"));
 			a.draw(gc);
@@ -220,12 +214,12 @@ public class Game implements Drawable, java.io.Serializable {
 	}
 	
 	public double[] getData() {
-		double[] data = new double[3 + asteroidsN * 5];
+		double[] data = new double[28];
 		int i = 0;
 		data[i++] = player.getOrient();
 		data[i++] = player.getForceVector().x;
 		data[i++] = player.getForceVector().y;
-		List<Asteroid> dangerous =  filterAsteroids((new DangerComparator(player)).reversed(), Math.min(asteroids.size(), asteroidsN));
+		List<Asteroid> dangerous =  filterAsteroids((new DangerComparator(player)).reversed(), Math.min(asteroids.size(), 5));
 		for (Asteroid asteroid : dangerous) {
 			Vector2D relativePos = Vector2D.subVector2d(player.getPos(),asteroid.getPos());
 			Vector2D relativeSpeed = Vector2D.addVector2d(asteroid.getSpeed(), player.getSpeed());
@@ -235,8 +229,8 @@ public class Game implements Drawable, java.io.Serializable {
 			data[i++] = relativeSpeed.y;
 			data[i++] = asteroid.size();
 		}
-		if (asteroids.size() < asteroidsN) {
-			while (i < 3 + asteroidsN * 5) {
+		if (asteroids.size() < 5) {
+			while (i < 25) {
 				data[i++] = Double.POSITIVE_INFINITY;
 				data[i++] = Double.POSITIVE_INFINITY;
 				data[i++] = 0;

@@ -17,7 +17,7 @@ public class AsteroidsGame extends Application {
 	private Game asteroids;
 	boolean keyA = false, keyD = false, keyW = false, keySpace=false;
 	public AsteroidsGame() {
-		asteroids = new Game(6);
+		asteroids = new Game();
 	}
 
 	@Override
@@ -35,15 +35,11 @@ public class AsteroidsGame extends Application {
 	    gc.setFill( Color.BLACK );
 	    gc.setStroke(Color.WHITE);
 	    long startNanoTime = System.nanoTime();
-	    // asteroids.testGame(); //BEZ ASTEROIDA
+//	    asteroids.testGame(); //BEZ ASTEROIDA
 	    AtomicBoolean canShoot = new AtomicBoolean(true);
 	    new AnimationTimer(){
 	        public void handle(long currentNanoTime)
 	        {
-				if (asteroids.isOver()) {
-					return;
-				}
-
 	        	if (keyA) asteroids.aInput();
 	        	if (keyD) asteroids.dInput();
 	        	if (keyW) asteroids.wInput();
@@ -52,6 +48,9 @@ public class AsteroidsGame extends Application {
 	        		keySpace=false;
 	        	}
 	        	asteroids.step();
+	        	if (asteroids.isOver()) {
+	        		asteroids.newGame();
+	        	}
 	    	    gc.fillRect(0, 0, Game.W, Game.H);
 	        	asteroids.draw(gc);
 	            long t = (currentNanoTime - startNanoTime); 
@@ -116,16 +115,13 @@ public class AsteroidsGame extends Application {
                     }
                 });
 
+	    
+	    
 	    theStage.show();
 	}
 
 	public static void main(String[] args) {
-		// ako zelite igrati igru
-		// launch(args);
-
-		// ^ ILI v
-
-		// ako zelite gledati kako neuronska mreza igra igru
+//		launch(args);
 		AsteroidsGameAI.launchGame(args);
 	}
 

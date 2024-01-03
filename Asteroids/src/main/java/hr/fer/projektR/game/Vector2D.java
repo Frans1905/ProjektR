@@ -1,6 +1,6 @@
 package hr.fer.projektR.game;
 
-public class Vector2D implements java.io.Serializable {
+public class Vector2D {
 	public double x,y;
 	public static final Vector2D I = new Vector2D(1,0);
 	public static final Vector2D J = new Vector2D(0,1);

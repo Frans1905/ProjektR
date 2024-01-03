@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import javafx.scene.canvas.GraphicsContext;
 
-public class Asteroid extends GameObject implements java.io.Serializable {
+public class Asteroid extends GameObject{
 	private int nSize;
 	private static final int RADIUS = 20;
 	public static final int MAX_SIZE = 4; // !
@@ -38,8 +38,8 @@ public class Asteroid extends GameObject implements java.io.Serializable {
 	public Collection<? extends Asteroid> split() {
 		List<Asteroid> smallerAsteroid = new ArrayList<>();
 		if (nSize > 1) {
-			Vector2D speed1 = this.getSpeed().rotate(Math.random() * 2 * Math.PI).scale(2);
-			Vector2D speed2 = this.getSpeed().rotate(Math.random() * 2 * Math.PI).scale(2);
+			Vector2D speed1 = this.getSpeed().rotate(Math.random() * 2 * Math.PI).scale(1);
+			Vector2D speed2 = this.getSpeed().rotate(Math.random() * 2 * Math.PI).scale(1);
 			Asteroid asteroid1 = new Asteroid(this.getPos(), speed1, this.getSize() / 2);
 			Asteroid asteroid2 = new Asteroid(this.getPos(), speed2, this.getSize() / 2);
 			smallerAsteroid.add(asteroid1);

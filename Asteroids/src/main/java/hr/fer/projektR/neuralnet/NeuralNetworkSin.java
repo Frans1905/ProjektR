@@ -16,9 +16,8 @@ public class NeuralNetworkSin extends NeuralNetwork {
 		rand = new Random();
 	}
 	@Override
-	public void fromParents(Jedinka parent1, Jedinka parent2, double mutationChance) {
-		super.fromParentsAlpha1((NeuralNetwork)parent1, (NeuralNetwork)parent2,0.1);
-		mutate(mutationChance);
+	public void fromParents(Jedinka parent1, Jedinka parent2) {
+		super.fromParents((NeuralNetwork)parent1, (NeuralNetwork)parent2,0.1);
 	}
 
 	@Override
@@ -40,7 +39,7 @@ public class NeuralNetworkSin extends NeuralNetwork {
 	}
 
 	@Override
-	public void mutate(double mutationChance) {
+	public void mutate() {
 		super.mutate(7e-3,0.8,0.9);
 	}
 	

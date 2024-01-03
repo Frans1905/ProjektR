@@ -1,5 +1,5 @@
 package hr.fer.projektR.evolucijski;
 
-public interface JedinkaFactroy <T extends Jedinka> {
-	T create();
+public interface JedinkaFactroy {
+	Jedinka create();
 }

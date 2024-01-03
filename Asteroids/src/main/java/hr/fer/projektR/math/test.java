@@ -1,6 +1,7 @@
 package hr.fer.projektR.math;
 
 import hr.fer.projektR.evolucijski.Evolution;
+import hr.fer.projektR.evolucijski.Jedinka;
 import hr.fer.projektR.evolucijski.JedinkaFactroy;
 import hr.fer.projektR.neuralnet.NeuralNetwork;
 import hr.fer.projektR.neuralnet.NeuralNetworkSin;
@@ -8,9 +9,9 @@ import hr.fer.projektR.neuralnet.NeuralNetworkSin;
 public class test {
 
 	public static void main(String[] args) {
-		JedinkaFactroy<NeuralNetworkSin> fact = new JedinkaFactroy<NeuralNetworkSin>() {
+		JedinkaFactroy fact = new JedinkaFactroy() {
 			@Override
-			public NeuralNetworkSin create() {
+			public Jedinka create() {
 				return new NeuralNetworkSin(1,15,15,1);
 			}
 		};
@@ -21,7 +22,7 @@ public class test {
 //			System.out.println(l.getBiases());
 //			System.out.println();
 //		}
-		Evolution<NeuralNetworkSin> darwin = new Evolution<NeuralNetworkSin>(65, fact, 7e-3);
+		Evolution darwin = new Evolution(65, fact);
 		Vector in = new Vector(1);
 		System.out.println(darwin.run(0, 0.001, 60000)-1);
 		

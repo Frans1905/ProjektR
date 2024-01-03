@@ -2,7 +2,7 @@ package hr.fer.projektR.math;
 
 import java.util.function.DoubleUnaryOperator;
 
-public class Matrix implements java.io.Serializable {
+public class Matrix {
 	private final int nrow,ncol;
 	public final double[][] matrix;
 	public Matrix(int rows, int ncol) {

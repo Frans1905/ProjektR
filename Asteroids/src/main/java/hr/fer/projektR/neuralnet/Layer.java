@@ -3,7 +3,7 @@ package hr.fer.projektR.neuralnet;
 import hr.fer.projektR.math.Matrix;
 import hr.fer.projektR.math.Vector;
 
-public class Layer implements java.io.Serializable {
+public class Layer {
 	private Matrix weights;
 	private Vector biases;
 	private Vector activations;
@@ -18,6 +18,7 @@ public class Layer implements java.io.Serializable {
 		super();
 		this.weights = weights;
 		this.biases = biases;
+		activations = new Vector(biases.size());
 	}
 	
 

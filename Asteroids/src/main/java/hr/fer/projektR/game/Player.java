@@ -4,7 +4,7 @@ import java.util.List;
 
 import javafx.scene.canvas.GraphicsContext;
 
-public class Player extends GameObject implements java.io.Serializable {
+public class Player extends GameObject {
 	double orient;
 	public static final double ACCELERATION = 1000, DECELERATION = -500; 
 	private boolean force = false;
@@ -73,7 +73,7 @@ public class Player extends GameObject implements java.io.Serializable {
 		this.orient = orient;
 	}
 
-	public class Bullet extends GameObject implements java.io.Serializable {
+	public class Bullet extends GameObject {
     	private static final int RANGE = 700; // !
     	private int travelled;
     	private Vector2D wrap(Vector2D vec) {
