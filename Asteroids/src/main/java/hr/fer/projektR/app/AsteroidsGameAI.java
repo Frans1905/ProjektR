@@ -19,7 +19,7 @@ public class AsteroidsGameAI extends Application {
 	public static int asteroidsN = 5;
 
     public AsteroidsGameAI() {
-        loadNetwork("src/main/resources/NeuralNetworkAsteroids500");
+        loadNetwork("src/main/resources/NeuralNetworkAsteroids325");
         asteroidsN = network.getLayers()[0].getWeights().getNcol() - 3;
         asteroidsN /= 5;
         game = new Game(asteroidsN);
