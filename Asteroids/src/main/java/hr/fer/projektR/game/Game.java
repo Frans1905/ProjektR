@@ -60,7 +60,7 @@ public class Game implements Drawable, java.io.Serializable {
 	}
 	
 	private void setAsteroidAlarm() {
-		asteroidAlarm = (int)Math.random() * 3000 + 1000;
+		asteroidAlarm = (int)Math.random() * 2000 + 1000;
 	}
 	
 	public void testGame() {

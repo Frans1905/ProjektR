@@ -19,7 +19,7 @@ public class AsteroidsGameAI extends Application {
 	public static int asteroidsN = 5;
 
     public AsteroidsGameAI() {
-        loadNetwork("src/main/resources/NeuralNetworkAsteroids250");
+        loadNetwork("src/main/resources/NeuralNetworkAsteroids500");
         asteroidsN = network.getLayers()[0].getWeights().getNcol() - 3;
         asteroidsN /= 5;
         game = new Game(asteroidsN);
@@ -83,7 +83,7 @@ public class AsteroidsGameAI extends Application {
                     return;
                 }
 
-                if (j % 10 == 0) {
+                if (j % 14 == 0) {
                     Vector in = new Vector(asteroidsN * 5 + 3);
                     in.fillWith(game.getData());
                     Vector m = network.process(in);
@@ -96,31 +96,30 @@ public class AsteroidsGameAI extends Application {
                     aPress = m.matrix[2][0] > 0.5;
                     dPress = m.matrix[3][0] > 0.5;
                 }
-                else {
-                    if (wPress) game.wInput();
-                    if (aPress) game.aInput();
-                    if (dPress) game.dInput();
-                    game.step();
-                    gc.fillRect(0, 0, Game.W, Game.H);
-                    game.draw(gc);
+                if (wPress) game.wInput();
+                if (aPress) game.aInput();
+                if (dPress) game.dInput();
+                game.step();
+                gc.fillRect(0, 0, Game.W, Game.H);
+                game.draw(gc);
 
-                    // long t = (currentNanoTime - startNanoTime);
-                    // long t = (currentNanoTime - lastNanoTime);
-                    // System.out.println(t);
-                    // if (t/1000 < Game.DT/1) {
-                    //     System.out.println("Spavat!");
-                    //     try {
-                    //         wait((long) (Game.DT - t/1e6),(int) (t%1000000));
-                    //     } catch (InterruptedException e) {
-                    //         e.printStackTrace();
-                    //     }
-                    // }
-                    // lastNanoTime = currentNanoTime;
-                    if (j == 10) {
-                        j = 0;
-                    }
-                }
+                // long t = (currentNanoTime - startNanoTime);
+                // long t = (currentNanoTime - lastNanoTime);
+                // System.out.println(t);
+                // if (t/1000 < Game.DT/1) {
+                //     System.out.println("Spavat!");
+                //     try {
+                //         wait((long) (Game.DT - t/1e6),(int) (t%1000000));
+                //     } catch (InterruptedException e) {
+                //         e.printStackTrace();
+                //     }
+                // }
+                // lastNanoTime = currentNanoTime;
                 j++;
+                if (j == 14) {
+                    j = 0;
+                }
+                
 
                 // Vector in = new Vector(asteroidsN * 5 + 3);
                 // in.fillWith(game.getData());

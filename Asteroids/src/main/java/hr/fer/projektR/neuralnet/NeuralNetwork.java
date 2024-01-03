@@ -41,18 +41,18 @@ public abstract class NeuralNetwork implements Jedinka, java.io.Serializable {
 	public void mutate(double alpha, double big, double relative) {
 		for(int i = 0; i < layers.length; i++) {
 			if (Math.random() < alpha) {
-				double delat = (Math.random() < big)?bigRandom()*10:smallRandom()*2;
-				layers[i].getWeights().applyToAll((t) -> (Math.random()<alpha)?t+delat:delat);		
+				double delat = (Math.random() < big)?bigRandom()*1:smallRandom()*0.5;
+				layers[i].getWeights().applyToAll((t) -> (Math.random()<relative)?t+delat:delat);		
 			}
 			if (Math.random() < alpha) {
-				double delat = (Math.random() < big)?bigRandom()*10:smallRandom()*2;
+				double delat = (Math.random() < big)?bigRandom()*1:smallRandom()*0.5;
 				layers[i].getBiases().applyToAll((t) -> (Math.random()<relative)?t+delat:delat);				
 			}
 		}
 	}
 
-	public double oneMutation(double alpha, double bigMutation) {
-		if (Math.random() < alpha) {
+	public double oneMutation(double mutationChance, double bigMutation) {
+		if (Math.random() < mutationChance) {
 			if (Math.random() < bigMutation) {
 				return bigRandom() * 6.0;
 			}
@@ -80,19 +80,19 @@ public abstract class NeuralNetwork implements Jedinka, java.io.Serializable {
 		}
 	}
 
-	public void fromParentsAlpha2(NeuralNetwork first, NeuralNetwork second, double alfa) {
+	public void fromParentsAlpha2(NeuralNetwork first, NeuralNetwork second, double alfa, double mutationChance) {
 		for (int i = 0; i < layers.length; i++) {
 			for (int j = 0; j < layers[i].getWeights().getNrow(); j++) {
 				for (int k = 0; k < layers[i].getWeights().getNcol(); k++) {
 					double len = Math.abs(first.getLayers()[i].getWeights().matrix[j][k] - second.getLayers()[i].getWeights().matrix[j][k]);
 					double low =Math.min(first.getLayers()[i].getWeights().matrix[j][k], second.getLayers()[i].getWeights().matrix[j][k]) - alfa*len;
-					layers[i].getWeights().matrix[j][k] = len*(1+2*alfa)*Math.random()+low + oneMutation(1.0 * alfa, 0.2);
+					layers[i].getWeights().matrix[j][k] = len*(1+2*alfa)*Math.random()+low + oneMutation(1.0 * mutationChance, 0.2);
 				}
 			}
 			for (int j = 0; j < layers[i].getWeights().getNrow(); j++) {
 				double len = Math.abs(first.getLayers()[i].getBiases().matrix[j][0] - second.getLayers()[i].getBiases().matrix[j][0]);
 				double low =Math.min(first.getLayers()[i].getBiases().matrix[j][0], second.getLayers()[i].getBiases().matrix[j][0]) - alfa*len;
-				layers[i].getBiases().matrix[j][0] = len*(1+2*alfa)*Math.random()+low + oneMutation(1.0 * alfa, 0.2);
+				layers[i].getBiases().matrix[j][0] = len*(1+2*alfa)*Math.random()+low + oneMutation(1.0 * mutationChance, 0.2);
 			}
 		}
 	}

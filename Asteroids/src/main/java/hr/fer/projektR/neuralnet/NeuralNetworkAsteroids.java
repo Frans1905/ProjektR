@@ -29,18 +29,18 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 	}
 
 	@Override
-	public void fromParents(Jedinka parent1, Jedinka parent2) {
+	public void fromParents(Jedinka parent1, Jedinka parent2, double mutationChance) {
 		// super.fromParentsAlpha1((NeuralNetwork)parent1, (NeuralNetwork)parent2, alfa);
-		// mutate();
+		// mutate(mutationChance);
 		
 		// ^ ILI v
 
-		super.fromParentsAlpha2((NeuralNetwork)parent1, (NeuralNetwork)parent2, alfa);
+		super.fromParentsAlpha2((NeuralNetwork)parent1, (NeuralNetwork)parent2, alfa, mutationChance);
 	}
 
 	@Override
-	public void mutate() {
-		super.mutate(alfa,0.16,0.5);
+	public void mutate(double mutationChance) {
+		super.mutate(mutationChance,0.14,0.9);
 	}
 
 	@Override
@@ -64,15 +64,15 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 					model.spaceInput();
 				}
 				boolean wPress = m.matrix[1][0] > 0.5, aPress = m.matrix[2][0] > 0.5, dPress = m.matrix[3][0] > 0.5;
-				for (j = 0; j < 10 && !model.isOver(); j++) {
+				for (j = 0; j < 14 && !model.isOver(); j++) {
 					if (wPress) model.wInput();
 					if (aPress) model.aInput();
 					if (dPress) model.dInput();
 					model.step();
 				}
 			}
-			fit += model.getScore()/20 + (10.0*i+1.0*j)/80; 
-			
+			// fit += model.getScore()/400 + (10.0*i+1.0*j)/10; 
+			fit += model.getScore()/300 + (10.0*i+1.0*j) * Math.log(10.0*i+1.0*j) / 60; 
 		}
 		return fit/5;
 	}

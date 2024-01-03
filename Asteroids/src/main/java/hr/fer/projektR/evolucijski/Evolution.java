@@ -15,8 +15,9 @@ public class Evolution<T extends Jedinka> {
 	private double firstMedian = -1, firstBest = -1, firstWorst = -1;
 	private double bestMedian = -1, bestBest = -1, bestWorst = -1;
 	private int bestMedianGeneration = -1, bestBestGeneration = -1, bestWorstGeneration = -1;
+	private double mutationChance;
 
-	public Evolution(int n, JedinkaFactroy<? extends T> fact) {
+	public Evolution(int n, JedinkaFactroy<? extends T> fact, double mutationChance) {
 		this.generationSize = n;
 		generation = new LinkedList<T>();
 		sideGeneration = new LinkedList<T>();
@@ -30,6 +31,7 @@ public class Evolution<T extends Jedinka> {
 			generation.add(jed2);
 			sideGeneration.add(jed3);		
 		}
+		this.mutationChance = mutationChance;
 		evaluate();
 	}
 
@@ -57,9 +59,10 @@ public class Evolution<T extends Jedinka> {
 		
 		for (int i = firstN; i < generationSize; i++) {
 			Jedinka par1;
-			par1 = selectOneParent(firstN);
+			// par1 = selectOneParent(firstN);
+			par1 = selectParent();
 			sideGeneration.get(i).copy(par1);
-			sideGeneration.get(i).mutate();
+			sideGeneration.get(i).mutate(mutationChance);
 		}
 		for (int i = 0; i < generationSize; i++) {
 			generation.get(i).copy(sideGeneration.get(i));
@@ -81,7 +84,7 @@ public class Evolution<T extends Jedinka> {
 			par1 = selectParent();
 			par2 = selectParent();
 //			System.out.println();
-			sideGeneration.get(i).fromParents(par1, par2);
+			sideGeneration.get(i).fromParents(par1, par2, mutationChance);
 			// sideGeneration.get(i).mutate(); // u pozivu fromParents
 		}
 		for (int i = 0; i < generationSize; i++) {
@@ -126,14 +129,46 @@ public class Evolution<T extends Jedinka> {
 	}
 	
 	public int run(double target, double tresh, int maxIter) {
-		
+		int staysTheSame = 0;
+		double lastMedian = -1;
 		int k = 0;
 		System.out.println("------------------------------------------------------------");
 		while(target-goodnes[best]>tresh && k++ < maxIter) {
 			nextGenerationOneParent();
 			// nextGeneration();
 			if (k%10 == 0 || k == 1) {
-				calculateAndPrintStatistics(k);
+				double median = calculateAndPrintStatistics(k);
+
+				// ako ne dolazi do promjena u populaciji povecaj vjerojatnost mutacija da se populacija "rasiri"
+				if (lastMedian != -1) {
+					double percentage = (lastMedian - median) / lastMedian;
+					if (-0.08 <= percentage && percentage <= 0.08) {
+						staysTheSame++;
+					}
+					else {
+						staysTheSame = 0;
+						lastMedian = median;
+					}
+					if (staysTheSame >= 10 && Math.random() < (1.0 - mutationChance)) {
+						mutationChance = Math.min(1.0, mutationChance + 0.25);
+						staysTheSame = 0;
+						lastMedian = median;
+						System.out.println(String.format("Povecana vjerojatnost mutacije! (%.2f)", mutationChance));
+						System.out.println("------------------------------------------------------------");
+					}
+					// postupno smanjuj vjerojatnost mutacije da se populacija moze koncentrira
+					// na tocke lokalnih maksimuma
+					else if (Math.random() < mutationChance) {
+						mutationChance = Math.max(0.05, mutationChance / 2);
+						System.out.println(String.format("Smanjena vjerojatnost mutacije! (%.2f)", mutationChance));
+						System.out.println("------------------------------------------------------------");
+					}
+				}
+				else {
+					lastMedian = median;
+				}
+				
+				
 			}
 			if (k % 25 == 0 || k == 1) {
 				refreshBestScores(k);
@@ -191,7 +226,7 @@ public class Evolution<T extends Jedinka> {
 		System.out.println("------------------------------------------------------------");
 	}
 
-	private void calculateAndPrintStatistics(int k) {
+	private double calculateAndPrintStatistics(int k) {
 		double[] sortedGoodnes = Arrays.copyOf(goodnes, goodnes.length);
 		Arrays.sort(sortedGoodnes);
 
@@ -203,6 +238,8 @@ public class Evolution<T extends Jedinka> {
 			firstMedian = sortedGoodnes[sortedGoodnes.length / 2];
 			firstWorst = sortedGoodnes[0];
 		}
+
+		return sortedGoodnes[sortedGoodnes.length / 2];
 	}
 	
 	public void testPrint() {

@@ -17,7 +17,7 @@ public class AsteroidsGame extends Application {
 	private Game asteroids;
 	boolean keyA = false, keyD = false, keyW = false, keySpace=false;
 	public AsteroidsGame() {
-		asteroids = new Game();
+		asteroids = new Game(6);
 	}
 
 	@Override
@@ -40,6 +40,10 @@ public class AsteroidsGame extends Application {
 	    new AnimationTimer(){
 	        public void handle(long currentNanoTime)
 	        {
+				if (asteroids.isOver()) {
+					return;
+				}
+
 	        	if (keyA) asteroids.aInput();
 	        	if (keyD) asteroids.dInput();
 	        	if (keyW) asteroids.wInput();
