@@ -123,7 +123,7 @@ public class Player extends GameObject {
     		}
     		next = wrap(next);
 //    		System.out.printf("%d %d%n",(int)next.x, (int)next.y);
-    		return intersects(asteroids, next, direction, (int) (range-next.abs()));
+    		return intersects(asteroids, next, direction, (int) (range-travelDistance));
     	}
     	
 		public int run(List<Asteroid> asteroids) {
