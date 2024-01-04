@@ -126,9 +126,9 @@ public abstract class NeuralNetwork implements Jedinka, java.io.Serializable {
 	}
 
 	public double smallRandom() {
-		return Math.random() * 3 - 1;
+		return Math.random() * 4 - 1;
 	}
 	public double bigRandom() {
-		return 10 * smallRandom();
+		return 20 * smallRandom();
 	}
 }

@@ -9,16 +9,17 @@ hr\fer\projektR\game\comparators\ClosestAngleComparator.class
 hr\fer\projektR\Utils\SerializableTriConsumer.class
 hr\fer\projektR\Utils\SerializableBinaryOperator.class
 hr\fer\projektR\math\Matrix.class
+hr\fer\projektR\game\AsteroidsAI$1.class
 hr\fer\projektR\Utils\NeuralNetworkEvolutionUtils$2.class
 hr\fer\projektR\game\Game.class
 hr\fer\projektR\math\Vector.class
 hr\fer\projektR\game\GameObject.class
+hr\fer\projektR\game\AsteroidsAI.class
 neuralnet\NeuralNetwork.class
 hr\fer\projektR\evolucijski\Jedinka.class
 hr\fer\projektR\game\Player.class
 hr\fer\projektR\Utils\NeuralNetworkEvolutionUtils$5.class
 hr\fer\projektR\app\AsteroidsGame$1.class
-hr\fer\projektR\game\asteroidsAI.class
 hr\fer\projektR\game\Player$Bullet.class
 hr\fer\projektR\game\Vector2D.class
 hr\fer\projektR\Utils\NeuralNetworkEvolutionUtils.class
@@ -32,7 +33,6 @@ hr\fer\projektR\Utils\NeuralNetworkEvolutionUtils$3.class
 hr\fer\projektR\evolucijski\Evolution.class
 hr\fer\projektR\Utils\NeuralNetworkEvolutionUtils$6.class
 hr\fer\projektR\neuralnet\Layer.class
-hr\fer\projektR\game\asteroidsAI$1.class
 hr\fer\projektR\game\comparators\DangerComparator.class
 hr\fer\projektR\app\AsteroidsGame$4.class
 hr\fer\projektR\neuralnet\NeuralNetworkSin.class

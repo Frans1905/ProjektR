@@ -47,22 +47,22 @@ import java.io.*;
  * 		staysTheSameMax: koliko dugo medijan treba stagnirati da se poveca vjerojatnost mutacije; staysTheSameMax * 10 generacija (DEFAULT: 10)
  * 		oneParent: true ako se djeca stvaraju iz jednog roditelja (u tom slucaju metoda za stvaranje djece nije vazna), false ako se djeca stvaraju iz dva roditelja (DEFAULT: false)
  */
-public class asteroidsAI {
+public class AsteroidsAI {
 	public static int asteroidsN = 8;
-	public static int vectorSize = asteroidsN * 5;
+	public static int vectorSize = asteroidsN * 5 + 3;
 	public static void main(String[] args) {
-		NeuralNetworkEvolutionUtils utils = new NeuralNetworkEvolutionUtils(0.12, 1.0, 0.1);
+		NeuralNetworkEvolutionUtils utils = new NeuralNetworkEvolutionUtils(0.12, 0.5, 0.1);
 		JedinkaFactroy<NeuralNetworkAsteroids> fact = new JedinkaFactroy<NeuralNetworkAsteroids>() {
 			@Override
 			public NeuralNetworkAsteroids create() {
-				return new NeuralNetworkAsteroids(utils.FROM_TWO_PARENTS, utils.FITNESS_FUNCTION_LIN_LOG, utils.MUTATE_CONNECTIONS, 8, vectorSize, 24, 4);
+				return new NeuralNetworkAsteroids(utils.FROM_TWO_PARENTS, utils.FITNESS_FUNCTION_LINEAR, utils.MUTATE_CONNECTIONS, 8, vectorSize, 24, 4);
 			}
 		};
-		Evolution darwin = new Evolution(400, 400 / 3, fact, 0.6, 0.05, 0.3, 0.25, 0.08, 10, true);
+		Evolution darwin = new Evolution(300, 300 / 3, fact, 0.6, 0.05, 0.3, 0.25, 0.08, 10, true);
 		Vector in = new Vector(vectorSize);
 		
 		// System.out.println(darwin.run(20000, 1, 10000)-1); 
-		System.out.println(darwin.run(200000, 1, 600)-1);
+		System.out.println(darwin.run(200000, 1, 400)-1);
 		Game game = new Game(asteroidsN);
 		game.newGame();
 		while (!game.isOver()) {

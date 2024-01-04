@@ -20,14 +20,9 @@ public class Game implements Drawable, java.io.Serializable {
 	private List<Asteroid> asteroids;
 	private int asteroidAlarm;
 	private Player.Bullet bullet;
-	// !!!
-	List<Asteroid> closestDistance;
-	List<Asteroid> closestAngle;
-	// !!!
 	int asteroidsN;
 
 	private boolean gameOver;
-//	private int tmptimer;
 	
 	public Game() {
 		this(5);
@@ -49,9 +44,6 @@ public class Game implements Drawable, java.io.Serializable {
 		dPressed = false;
 		spacePressed = false;
 		gameOver = false;
-		
-//		tmptimer = 0;
-	
 	}
 
 	public List<Asteroid> filterAsteroids(Comparator<? super Asteroid> c, int n) {
@@ -98,7 +90,6 @@ public class Game implements Drawable, java.io.Serializable {
 				speed = Vector2D.subVector2d(player.getPos(), pos).unit().scale(100);
 			}
 			int size = 1<<((int) (Math.random() * 2.99)) ;
-//			System.out.println(asteroids.size());
 			if (asteroids.size() < MAX_ASTEROID_MATERIAL)
 				asteroids.add(new Asteroid(pos, speed, size));
 		}
@@ -119,7 +110,6 @@ public class Game implements Drawable, java.io.Serializable {
 
 	public void step() {
 		//check input
-//		tmptimer++;
 		player.setForce(false);
 		if (wPressed) {
 			player.setForce(true);
@@ -144,9 +134,7 @@ public class Game implements Drawable, java.io.Serializable {
 		for (Asteroid asteroid: asteroids) {
 			asteroid.move(DT/1000);
 			if (player.isHitBy(asteroid)) {
-				//System.exit(1); // privremeno
 				gameOver = true;
-//				System.out.println(tmptimer);
 				return;
 			}
 		}
@@ -169,30 +157,7 @@ public class Game implements Drawable, java.io.Serializable {
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		// !!!
-//		closestDistance = filterAsteroids(new ClosestDistanceComparator(player), Math.min(asteroids.size(), 3));
-//		closestAngle = filterAsteroids(new ClosestAngleComparator(player), Math.min(asteroids.size(), 3));
-		// !!!
 		player.draw(gc);
-//		for (Asteroid asteroid: asteroids) {a
-		// !!!
-		// samo da najblizi asteroidi budu vizualno oznaceni
-//		if (closestDistance != null) {
-//			for (Asteroid a: closestDistance) {
-//				gc.setStroke(Paint.valueOf("RED"));
-//				a.draw(gc);
-//				gc.setStroke(Paint.valueOf("WHITE"));
-//			}
-//		}
-//
-//		if (closestAngle != null) {
-//			for (Asteroid a: closestAngle) {
-//				gc.setStroke(Paint.valueOf("BLUE"));
-//				a.draw(gc);
-//				gc.setStroke(Paint.valueOf("WHITE"));
-//			}
-//		}
-
 
 		for (Asteroid asteroid: asteroids) {
 			asteroid.draw(gc);
@@ -220,55 +185,68 @@ public class Game implements Drawable, java.io.Serializable {
 	}
 	
 	public double[] getData() {
-		double[] data = new double[asteroidsN * 5];
+		double[] data = new double[asteroidsN * 5 + 3];
 		int i = 0;
-		// data[i++] = player.getOrient();
-		// data[i++] = player.getForceVector().x;
-		// data[i++] = player.getForceVector().y;
+		data[i++] = player.getOrient();
+		data[i++] = player.getForceVector().x;
+		data[i++] = player.getForceVector().y;
 		List<Asteroid> dangerous =  filterAsteroids((new DangerComparator(player)).reversed(), Math.min(asteroids.size(), asteroidsN));
 		for (Asteroid asteroid : dangerous) {
 			Vector2D relativePos = Vector2D.subVector2d(player.getPos(),asteroid.getPos());
-			Vector2D relativeSpeed = Vector2D.addVector2d(asteroid.getSpeed(), player.getSpeed());
+			Vector2D relativeSpeed = Vector2D.subVector2d(asteroid.getSpeed(), player.getSpeed());
 
-			data[i++] = angleFromPlayer(relativePos);
-			data[i++] = relativePos.abs();
-			data[i++] = speedAngleFromPlayer(relativePos, relativeSpeed);
-			data[i++] = relativeSpeed.abs();
-			data[i++] = asteroid.size();
-
-			// data[i++] = relativePos.x;
-			// data[i++] = relativePos.y;
-			// data[i++] = relativeSpeed.x;
-			// data[i++] = relativeSpeed.y;
+			// data[i++] = angleFromPlayer(relativePos);
+			// data[i++] = relativePos.abs();
+			// data[i++] = speedAngleFromPlayer(relativePos, relativeSpeed);
+			// data[i++] = relativeSpeed.abs();
 			// data[i++] = asteroid.size();
+
+			data[i++] = relativePos.x;
+			data[i++] = relativePos.y;
+			data[i++] = relativeSpeed.x;
+			data[i++] = relativeSpeed.y;
+			data[i++] = asteroid.size();
 		}
 		if (asteroids.size() < asteroidsN) {
-			while (i < asteroidsN * 5) {
-				data[i++] = Math.PI;
-				data[i++] = Double.POSITIVE_INFINITY;
-				data[i++] = Math.PI;
-				data[i++] = 0;
-				data[i++] = 0;
+			while (i < asteroidsN * 5 + 3) {
+				// data[i++] = Math.PI;
+				// data[i++] = Double.POSITIVE_INFINITY;
+				// data[i++] = Math.PI;
+				// data[i++] = 0;
+				// data[i++] = 0;
 
-				// data[i++] = Double.POSITIVE_INFINITY;
-				// data[i++] = Double.POSITIVE_INFINITY;
-				// data[i++] = 0;
-				// data[i++] = 0;
-				// data[i++] = 0;				
+				data[i++] = Double.POSITIVE_INFINITY;
+				data[i++] = Double.POSITIVE_INFINITY;
+				data[i++] = 0;
+				data[i++] = 0;
+				data[i++] = 0;				
 			}
 		}
 		return data;
 	}
 
+	private double checkIfAngleOK(double angle) {
+		if (angle < 0) {
+			angle += 2 * Math.PI;
+		}
+		else if (angle >= 2 * Math.PI) {
+			angle -= 2 * Math.PI;
+		}
+		return angle;
+	}
+
 	private double angleFromPlayer(Vector2D relativePos) {
 		double angle = Math.atan2(relativePos.y, relativePos.x);
-		return angle - player.getOrient();
+		angle -= player.getOrient();
+		return checkIfAngleOK(angle);
 	}
 
 	private double speedAngleFromPlayer(Vector2D relativePos, Vector2D relativeSpeed) {
 		double angle = Math.atan2(relativePos.y, relativePos.x);
 		double speedAngle = Math.atan2(relativeSpeed.y, relativeSpeed.x);
-		return angle + speedAngle;
+		angle += speedAngle;
+
+		return checkIfAngleOK(angle);
 	}
 	
 	public boolean isOver() {
