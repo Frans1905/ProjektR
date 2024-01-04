@@ -16,11 +16,12 @@ public class AsteroidsGameAI extends Application {
 	private Game game;
     private NeuralNetworkAsteroids network;
 	boolean keyA = false, keyD = false, keyW = false, keySpace=false;
-	public static int asteroidsN = 5;
+	public static int asteroidsN = 8;
 
     public AsteroidsGameAI() {
-        loadNetwork("src/main/resources/specialPick/NeuralNetworkAsteroids175");
-        asteroidsN = network.getLayers()[0].getWeights().getNcol() - 3;
+        loadNetwork("src/main/resources/NeuralNetworkAsteroids600");        
+
+        asteroidsN = network.getLayers()[0].getWeights().getNcol();
         asteroidsN /= 5;
         game = new Game(asteroidsN);
 	}
@@ -83,8 +84,8 @@ public class AsteroidsGameAI extends Application {
                     return;
                 }
 
-                if (j % 14 == 0) {
-                    Vector in = new Vector(asteroidsN * 5 + 3);
+                if (j % 10 == 0) {
+                    Vector in = new Vector(network.getLayers()[0].getWeights().getNcol());
                     in.fillWith(game.getData());
                     Vector m = network.process(in);
 
@@ -116,7 +117,7 @@ public class AsteroidsGameAI extends Application {
                 // }
                 // lastNanoTime = currentNanoTime;
                 j++;
-                if (j == 14) {
+                if (j == 10) {
                     j = 0;
                 }
                 

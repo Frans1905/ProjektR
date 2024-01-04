@@ -1,5 +1,6 @@
 package hr.fer.projektR.game;
 
+import hr.fer.projektR.Utils.NeuralNetworkEvolutionUtils;
 import hr.fer.projektR.evolucijski.Evolution;
 import hr.fer.projektR.evolucijski.JedinkaFactroy;
 import hr.fer.projektR.math.Vector;
@@ -7,25 +8,59 @@ import hr.fer.projektR.neuralnet.NeuralNetworkAsteroids;
 import hr.fer.projektR.neuralnet.NeuralNetwork;
 import java.io.*;
 
+/**
+ * Kako mijenjati parametre:
+ * -------------------------
+ * ispisuju se podaci nakon prve i dalje nakon svakih 10 generacija (medijan, najbolji, nalosiji)
+ * sprema se najbolji iz prve generacije i iz svake 25-te
+ * na kraju se ispisuju podaci za prvu generaciju i najbolji medijan, najbolji generalno i najboolji najlosiji iz spremljenih generacija
+ * 
+ * 	asteroidsN: koliko asteroida se salje mrezi koa input
+ * 	maxIter: koliko generacija se maksimalno generira
+ * 
+ * 	NeuralNetworkEvolutionUtils
+ * 	---------------------------
+ * 		sadrzi metode za mutacije, stvaranej djece i racunanje fitnessa
+ * 
+ * 		bigMutation: vjerojatnost da mutacija bude velika (DEFAULT: 0.1)
+ * 		relative: vjerojatnost da se "gen" prilikom mutacije poveca, u suprotnom se zamijeni (DEFAULT: 0.5)
+ * 		alpha: parametar za BLX-alpha crossover; samo za metode za reprodukciju (DEFAULT: 0.1)
+ * 		
+ * 	NeuralNetworkAsteroids
+ * 	----------------------
+ * 		fromParentMethod: metoda za stvaranje djeteta iz 2 roditelja (DEFAULT: BLX-alpha crossover, alpha = 0.1)
+ *		fitnessMethod: metoda za racunanje fitnessa na temelju rezultata u igri i prezivljenog vremena (DEFAULT: linearno)
+ *		mutationMethod: metoda za mutiranje jedinke (DEFAULT: isto kao NeuralNetworkEvolutionUtils.MUTATE_LAYERS, bigMutation = 0.1, relative = 0.5)
+ *		numberOfRepetitions: koliko puta mreza igra igru za odredivanje fitnessa (DEFAULT: -)
+ * 		c: arhitektura neuronske mreze
+ * 
+ * 	Evolution
+ * 	---------
+ * 		n: broj jedinki u generaciji (DEFAULT: -)
+ * 		firstN: koliko se jedinki iz bolje polovice prenosi u sljedecu generaciju; najbolji se uvijek prenosi (DEFAULT: 1)
+ * 		fact: tvornica mreza (DEFAULT: -)
+ * 		mutationChance: vjerojatnost mutacija (DEFAULT: -)
+ * 		minMutation: minimalna vjerojatnost mutacija (DEFAULT: 0.05)
+ * 		mutationReductionFactor: za koji faktor se smanjuje vjerojatnost mutacija s vremenom (DEFAULT: 1.0)
+ * 		mutationIncrement: za koliko se poveca vjerojatnost mutacije ako medijan stagnira (DEFAULT: 0.0)
+ * 		samePercentageTreshold: unutar kojeg postotka promjene se smatra da medijan stagnira (DEFAULT: 0.0)
+ * 		staysTheSameMax: koliko dugo medijan treba stagnirati da se poveca vjerojatnost mutacije; staysTheSameMax * 10 generacija (DEFAULT: 10)
+ * 		oneParent: true ako se djeca stvaraju iz jednog roditelja (u tom slucaju metoda za stvaranje djece nije vazna), false ako se djeca stvaraju iz dva roditelja (DEFAULT: false)
+ */
 public class asteroidsAI {
 	public static int asteroidsN = 8;
-	public static int vectorSize = 3 + asteroidsN * 5;
+	public static int vectorSize = asteroidsN * 5;
 	public static void main(String[] args) {
+		NeuralNetworkEvolutionUtils utils = new NeuralNetworkEvolutionUtils(0.12, 1.0, 0.1);
 		JedinkaFactroy<NeuralNetworkAsteroids> fact = new JedinkaFactroy<NeuralNetworkAsteroids>() {
 			@Override
 			public NeuralNetworkAsteroids create() {
-				return new NeuralNetworkAsteroids(8, 0.1, vectorSize, 24, 4);
+				return new NeuralNetworkAsteroids(utils.FROM_TWO_PARENTS, utils.FITNESS_FUNCTION_LIN_LOG, utils.MUTATE_CONNECTIONS, 8, vectorSize, 24, 4);
 			}
 		};
-//		NeuralNetworkSin net = (NeuralNetworkSin) fact.create();
-//		net.randomize();
-//		for (Layer l: net.getLayers()) {
-//			System.out.println(l.getWeights());
-//			System.out.println(l.getBiases());
-//			System.out.println();
-//		}
-		Evolution<NeuralNetworkAsteroids> darwin = new Evolution<NeuralNetworkAsteroids>(600, fact, 0.6);
+		Evolution darwin = new Evolution(400, 400 / 3, fact, 0.6, 0.05, 0.3, 0.25, 0.08, 10, true);
 		Vector in = new Vector(vectorSize);
+		
 		// System.out.println(darwin.run(20000, 1, 10000)-1); 
 		System.out.println(darwin.run(200000, 1, 600)-1);
 		Game game = new Game(asteroidsN);
@@ -47,8 +82,8 @@ public class asteroidsAI {
 		saveObject((NeuralNetworkAsteroids) darwin.getBest(), "src/main/resources/NeuralNetworkFile");
 		System.out.println(game.getScore());
 	}
-
-	public static <T extends Serializable> void saveObject (T best, String name) {
+	// <T extends Serializable>
+	public static  void saveObject (java.io.Serializable best, String name) {
 		try {   
         	//Saving of object in a file
             FileOutputStream file = new FileOutputStream(name);

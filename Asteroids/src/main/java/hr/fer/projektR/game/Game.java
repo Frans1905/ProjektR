@@ -220,31 +220,55 @@ public class Game implements Drawable, java.io.Serializable {
 	}
 	
 	public double[] getData() {
-		double[] data = new double[3 + asteroidsN * 5];
+		double[] data = new double[asteroidsN * 5];
 		int i = 0;
-		data[i++] = player.getOrient();
-		data[i++] = player.getForceVector().x;
-		data[i++] = player.getForceVector().y;
+		// data[i++] = player.getOrient();
+		// data[i++] = player.getForceVector().x;
+		// data[i++] = player.getForceVector().y;
 		List<Asteroid> dangerous =  filterAsteroids((new DangerComparator(player)).reversed(), Math.min(asteroids.size(), asteroidsN));
 		for (Asteroid asteroid : dangerous) {
 			Vector2D relativePos = Vector2D.subVector2d(player.getPos(),asteroid.getPos());
 			Vector2D relativeSpeed = Vector2D.addVector2d(asteroid.getSpeed(), player.getSpeed());
-			data[i++] = relativePos.x;
-			data[i++] = relativePos.y;
-			data[i++] = relativeSpeed.x;
-			data[i++] = relativeSpeed.y;
+
+			data[i++] = angleFromPlayer(relativePos);
+			data[i++] = relativePos.abs();
+			data[i++] = speedAngleFromPlayer(relativePos, relativeSpeed);
+			data[i++] = relativeSpeed.abs();
 			data[i++] = asteroid.size();
+
+			// data[i++] = relativePos.x;
+			// data[i++] = relativePos.y;
+			// data[i++] = relativeSpeed.x;
+			// data[i++] = relativeSpeed.y;
+			// data[i++] = asteroid.size();
 		}
 		if (asteroids.size() < asteroidsN) {
-			while (i < 3 + asteroidsN * 5) {
+			while (i < asteroidsN * 5) {
+				data[i++] = Math.PI;
 				data[i++] = Double.POSITIVE_INFINITY;
-				data[i++] = Double.POSITIVE_INFINITY;
+				data[i++] = Math.PI;
 				data[i++] = 0;
 				data[i++] = 0;
-				data[i++] = 0;				
+
+				// data[i++] = Double.POSITIVE_INFINITY;
+				// data[i++] = Double.POSITIVE_INFINITY;
+				// data[i++] = 0;
+				// data[i++] = 0;
+				// data[i++] = 0;				
 			}
 		}
 		return data;
+	}
+
+	private double angleFromPlayer(Vector2D relativePos) {
+		double angle = Math.atan2(relativePos.y, relativePos.x);
+		return angle - player.getOrient();
+	}
+
+	private double speedAngleFromPlayer(Vector2D relativePos, Vector2D relativeSpeed) {
+		double angle = Math.atan2(relativePos.y, relativePos.x);
+		double speedAngle = Math.atan2(relativeSpeed.y, relativeSpeed.x);
+		return angle + speedAngle;
 	}
 	
 	public boolean isOver() {
@@ -254,6 +278,7 @@ public class Game implements Drawable, java.io.Serializable {
 		return score;
 	}
 }
+
 // mvn exec:java -Dexec.mainClass="hr.fer.projektR.app.AsteroidsGame"
 
 

@@ -1,5 +1,6 @@
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Drawable.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Player.java
+D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\Utils\SerializableTriConsumer.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\neuralnet\NeuralNetworkAsteroids.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\math\Matrix.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Vector2D.java
@@ -15,11 +16,14 @@ D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\neuralnet\NeuralNetwork.j
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\app\AsteroidsGameAI.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Asteroid.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Game.java
+D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\Utils\SerializableBiConsumer.java
+D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\Utils\NeuralNetworkEvolutionUtils.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\neuralnet\Layer.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\comparators\ClosestAngleComparator.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\comparators\ClosestDistanceComparator.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\neuralnet\Layer.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\evolucijski\Jedinka.java
+D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\Utils\SerializableBinaryOperator.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\evolucijski\JedinkaFactroy.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\math\MatrixOperationException.java
 D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\math\Vector.java

@@ -1,22 +1,36 @@
 package hr.fer.projektR.neuralnet;
 
+import java.util.function.BiConsumer;
+
+import hr.fer.projektR.Utils.SerializableTriConsumer;
 import hr.fer.projektR.evolucijski.Jedinka;
 import hr.fer.projektR.math.Vector;
 
 public abstract class NeuralNetwork implements Jedinka, java.io.Serializable {
 	private Layer[] layers;
+	private BiConsumer<NeuralNetwork, Double> mutationMethod = null;
+	private SerializableTriConsumer<NeuralNetwork, NeuralNetwork, NeuralNetwork> fromParentMethod = null;
 	
 	public NeuralNetwork(Layer[] layers) {
 		this.layers = layers;
 	}
-	
 	public NeuralNetwork(int... c) {
+		this(null, null, c);
+	}
+	public NeuralNetwork(BiConsumer<NeuralNetwork, Double> mutationMethod, int... c) {
+		this(null, mutationMethod, c);
+	}
+	public NeuralNetwork(SerializableTriConsumer<NeuralNetwork, NeuralNetwork, NeuralNetwork> fromParentMethod, int... c) {
+		this(fromParentMethod, null, c);
+	}
+	public NeuralNetwork(SerializableTriConsumer<NeuralNetwork, NeuralNetwork, NeuralNetwork> fromParentMethod, BiConsumer<NeuralNetwork, Double> mutationMethod, int... c) {
 		layers = new Layer[c.length - 1];
 		for (int i = 0; i < c.length - 1; i++) {
 			layers[i] = new Layer(c[i + 1], c[i]);
 		}
+		this.mutationMethod = mutationMethod;
+		this.fromParentMethod = fromParentMethod;
 	}
-	
 	public NeuralNetwork(NeuralNetwork other) {
 		this(other.calculateSizes());
 		this.copyFrom(other);
@@ -25,7 +39,6 @@ public abstract class NeuralNetwork implements Jedinka, java.io.Serializable {
 	public Layer[] getLayers() {
 		return layers;
 	}
-
 	public void setLayers(Layer[] layers) {
 		this.layers = layers;
 	}
@@ -36,6 +49,15 @@ public abstract class NeuralNetwork implements Jedinka, java.io.Serializable {
 			sizes[i] = this.getLayers()[i].getActivations().size();
 		}
 		return sizes;
+	}
+
+	public void mutate(double mutationChance) {
+		if (mutationMethod == null) {
+			mutate(mutationChance, 0.1, 0.5);
+		}
+		else {
+			mutationMethod.accept(this, mutationChance);
+		}
 	}
 	
 	public void mutate(double alpha, double big, double relative) {
@@ -51,19 +73,16 @@ public abstract class NeuralNetwork implements Jedinka, java.io.Serializable {
 		}
 	}
 
-	public double oneMutation(double mutationChance, double bigMutation) {
-		if (Math.random() < mutationChance) {
-			if (Math.random() < bigMutation) {
-				return bigRandom() * 6.0;
-			}
-			else {
-				return smallRandom() * 1.0;
-			}
+	public void fromParents(NeuralNetwork first, NeuralNetwork second) {
+		if (fromParentMethod == null) {
+			fromParentsAlpha(first, second, 0.1);
 		}
-		return 0;
+		else {
+			fromParentMethod.accept(this, first, second);
+		}
 	}
 	
-	public void fromParentsAlpha1(NeuralNetwork first, NeuralNetwork second, double alfa) {
+	public void fromParentsAlpha(NeuralNetwork first, NeuralNetwork second, double alfa) {
 		for (int i = 0; i < layers.length; i++) {
 			for (int j = 0; j < layers[i].getWeights().getNrow(); j++) {
 				for (int k = 0; k < layers[i].getWeights().getNcol(); k++) {
@@ -76,23 +95,6 @@ public abstract class NeuralNetwork implements Jedinka, java.io.Serializable {
 				double len = Math.abs(first.getLayers()[i].getBiases().matrix[j][0] - second.getLayers()[i].getBiases().matrix[j][0]);
 				double low =Math.min(first.getLayers()[i].getBiases().matrix[j][0], second.getLayers()[i].getBiases().matrix[j][0]) - alfa*len;
 				layers[i].getBiases().matrix[j][0] = len*(1+2*alfa)*Math.random()+low;
-			}
-		}
-	}
-
-	public void fromParentsAlpha2(NeuralNetwork first, NeuralNetwork second, double alfa, double mutationChance) {
-		for (int i = 0; i < layers.length; i++) {
-			for (int j = 0; j < layers[i].getWeights().getNrow(); j++) {
-				for (int k = 0; k < layers[i].getWeights().getNcol(); k++) {
-					double len = Math.abs(first.getLayers()[i].getWeights().matrix[j][k] - second.getLayers()[i].getWeights().matrix[j][k]);
-					double low =Math.min(first.getLayers()[i].getWeights().matrix[j][k], second.getLayers()[i].getWeights().matrix[j][k]) - alfa*len;
-					layers[i].getWeights().matrix[j][k] = len*(1+2*alfa)*Math.random()+low + oneMutation(1.0 * mutationChance, 0.2);
-				}
-			}
-			for (int j = 0; j < layers[i].getWeights().getNrow(); j++) {
-				double len = Math.abs(first.getLayers()[i].getBiases().matrix[j][0] - second.getLayers()[i].getBiases().matrix[j][0]);
-				double low =Math.min(first.getLayers()[i].getBiases().matrix[j][0], second.getLayers()[i].getBiases().matrix[j][0]) - alfa*len;
-				layers[i].getBiases().matrix[j][0] = len*(1+2*alfa)*Math.random()+low + oneMutation(1.0 * mutationChance, 0.2);
 			}
 		}
 	}
@@ -123,10 +125,10 @@ public abstract class NeuralNetwork implements Jedinka, java.io.Serializable {
 		}
 	}
 
-	double smallRandom() {
-		return Math.random() * 2 - 1;
+	public double smallRandom() {
+		return Math.random() * 3 - 1;
 	}
-	double bigRandom() {
-		return 20 * smallRandom();
+	public double bigRandom() {
+		return 10 * smallRandom();
 	}
 }

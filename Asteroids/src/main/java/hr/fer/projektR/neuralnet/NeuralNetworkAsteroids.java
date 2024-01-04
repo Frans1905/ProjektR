@@ -1,6 +1,10 @@
 package hr.fer.projektR.neuralnet;
 
 import java.util.Random;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+
+import hr.fer.projektR.Utils.SerializableTriConsumer;
 import hr.fer.projektR.evolucijski.Jedinka;
 import hr.fer.projektR.game.Game;
 import hr.fer.projektR.math.Vector;
@@ -8,39 +12,41 @@ import hr.fer.projektR.math.Vector;
 public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Serializable {
 	private Random rand;
 	private Game model;
-	private double alfa;
 	private int numberOfRepetitions;
-	
+	private BinaryOperator<Double> fitnessMethod = null;
+
 	public NeuralNetworkAsteroids(int... c) {
-		this(6, 0.1, c);
+		this(6, c);
 	}
-
-	public NeuralNetworkAsteroids(int numberOfRepetitions, double alfa, int... c) {
-		super(c);
+	public NeuralNetworkAsteroids(int numberOfRepetitions, int... c) {
+		this(null, null, null, numberOfRepetitions, c);
+	}
+	public NeuralNetworkAsteroids(BinaryOperator<Double> fitnessMethod, BiConsumer<NeuralNetwork, Double> mutationMethod, int numberOfRepetitions, int... c) {
+		this(null, fitnessMethod, mutationMethod, numberOfRepetitions, c);
+	}
+	public NeuralNetworkAsteroids(SerializableTriConsumer<NeuralNetwork, NeuralNetwork, NeuralNetwork> fromParentMethod, BinaryOperator<Double> fitnessMethod, BiConsumer<NeuralNetwork, Double> mutationMethod, int numberOfRepetitions, int... c) {
+		super(fromParentMethod, mutationMethod, c);
 		rand = new Random();
-		model = new Game((c[0] - 3) / 5);
-		this.alfa = alfa;
+		model = new Game(c[0] / 5);
 		this.numberOfRepetitions = numberOfRepetitions;
+		this.fitnessMethod = fitnessMethod;
 	}
-
+	public NeuralNetworkAsteroids(SerializableTriConsumer<NeuralNetwork, NeuralNetwork, NeuralNetwork> fromParentMethod, BinaryOperator<Double> fitnessMethod, int numberOfRepetitions, int... c) {
+		this(fromParentMethod, fitnessMethod, null, numberOfRepetitions, c);
+	}
 	public NeuralNetworkAsteroids(NeuralNetwork n) {
 		super(n);
 		rand = new Random();
 	}
 
 	@Override
-	public void fromParents(Jedinka parent1, Jedinka parent2, double mutationChance) {
-		// super.fromParentsAlpha1((NeuralNetwork)parent1, (NeuralNetwork)parent2, alfa);
-		// mutate(mutationChance);
-		
-		// ^ ILI v
-
-		super.fromParentsAlpha2((NeuralNetwork)parent1, (NeuralNetwork)parent2, alfa, mutationChance);
+	public void fromParents(Jedinka parent1, Jedinka parent2) {
+		super.fromParents((NeuralNetwork) parent1,(NeuralNetwork) parent2);
 	}
 
 	@Override
 	public void mutate(double mutationChance) {
-		super.mutate(mutationChance,0.14,0.9);
+		super.mutate(mutationChance);
 	}
 
 	@Override
@@ -64,27 +70,31 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 					model.spaceInput();
 				}
 				boolean wPress = m.matrix[1][0] > 0.5, aPress = m.matrix[2][0] > 0.5, dPress = m.matrix[3][0] > 0.5;
-				for (j = 0; j < 14 && !model.isOver(); j++) {
+				for (j = 0; j < 10 && !model.isOver(); j++) {
 					if (wPress) model.wInput();
 					if (aPress) model.aInput();
 					if (dPress) model.dInput();
 					model.step();
 				}
 			}
-			// fit += model.getScore()/400 + (10.0*i+1.0*j)/10; 
-			fit += model.getScore()/300 + (10.0*i+1.0*j) * Math.log(10.0*i+1.0*j) / 60; 
+			if (fitnessMethod == null) {
+				fit += model.getScore() + (10.0*i+1.0*j);
+			}
+			else {
+				fit += fitnessMethod.apply((double) model.getScore(), 10.0*i + 1.0*j);
+			}
 		}
-		return fit/5;
+		return fit / (10 * numberOfRepetitions);
 	}
-	@Override
-	double bigRandom() {
-		return rand.nextGaussian()*1000;
-	}
-	
-	@Override
-	double smallRandom() {
-		return super.smallRandom()*250;
-	}
+
+	// @Override
+	// public double bigRandom() {
+	// 	return rand.nextGaussian()*1000;
+	// }
+	// @Override
+	// public double smallRandom() {
+	// 	return super.smallRandom()*250;
+	// }
 	
 	@Override
 	public Vector process(Vector input) {
@@ -92,5 +102,4 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 		out.applyToAll((t) -> {return 1.0 / (1 + Math.exp(-t));});
 		return out;
 	}
-
 }

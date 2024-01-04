@@ -21,7 +21,7 @@ public class test {
 //			System.out.println(l.getBiases());
 //			System.out.println();
 //		}
-		Evolution<NeuralNetworkSin> darwin = new Evolution<NeuralNetworkSin>(65, fact, 7e-3);
+		Evolution darwin = new Evolution(65, fact, 7e-3);
 		Vector in = new Vector(1);
 		System.out.println(darwin.run(0, 0.001, 60000)-1);
 		
