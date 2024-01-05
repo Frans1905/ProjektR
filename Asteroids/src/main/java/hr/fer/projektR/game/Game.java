@@ -20,7 +20,8 @@ public class Game implements Drawable, java.io.Serializable {
 	private List<Asteroid> asteroids;
 	private int asteroidAlarm;
 	private Player.Bullet bullet;
-	int asteroidsN;
+	private int asteroidsN;
+	private double[] data;
 
 	private boolean gameOver;
 	
@@ -31,6 +32,7 @@ public class Game implements Drawable, java.io.Serializable {
 	public Game(int n) {
 		asteroids = new LinkedList<>();
 		asteroidsN = n;
+		data = new double[asteroidsN * 5 + 3];
 		newGame();
 	}
 	
@@ -185,7 +187,7 @@ public class Game implements Drawable, java.io.Serializable {
 	}
 	
 	public double[] getData() {
-		double[] data = new double[asteroidsN * 5 + 3];
+		// double[] data = new double[asteroidsN * 5 + 3];
 		int i = 0;
 		data[i++] = player.getOrient();
 		data[i++] = player.getForceVector().x;

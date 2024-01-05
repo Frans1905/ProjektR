@@ -15,7 +15,9 @@ import java.io.*;
  * sprema se najbolji iz prve generacije i iz svake 25-te
  * na kraju se ispisuju podaci za prvu generaciju i najbolji medijan, najbolji generalno i najboolji najlosiji iz spremljenih generacija
  * 
- * 	asteroidsN: koliko asteroida se salje mrezi koa input
+ * 	SMALL_RANDOM_RANGE: +- kolko idu brojevi za male mutacije (uniformna distribucija)
+ * 	BIG_RANDOM_RANGE: +- kolko idu brojevi za velike mutacije (normalna distribucija)
+ * 	ASTEROIDS_N: koliko asteroida se salje mrezi koa input
  * 	maxIter: koliko generacija se maksimalno generira
  * 
  * 	NeuralNetworkEvolutionUtils
@@ -48,22 +50,24 @@ import java.io.*;
  * 		oneParent: true ako se djeca stvaraju iz jednog roditelja (u tom slucaju metoda za stvaranje djece nije vazna), false ako se djeca stvaraju iz dva roditelja (DEFAULT: false)
  */
 public class AsteroidsAI {
-	public static int asteroidsN = 8;
-	public static int vectorSize = asteroidsN * 5 + 3;
+	public static final int SMALL_RANDOM_RANGE = 2;
+	public static final int BIG_RANDOM_RANGE = 20;
+	public static final int ASTEROIDS_N = 8;
+	public static final int VECTOR_SIZE = ASTEROIDS_N * 5 + 3;
 	public static void main(String[] args) {
 		NeuralNetworkEvolutionUtils utils = new NeuralNetworkEvolutionUtils(0.12, 0.5, 0.1);
 		JedinkaFactroy<NeuralNetworkAsteroids> fact = new JedinkaFactroy<NeuralNetworkAsteroids>() {
 			@Override
 			public NeuralNetworkAsteroids create() {
-				return new NeuralNetworkAsteroids(utils.FROM_TWO_PARENTS, utils.FITNESS_FUNCTION_LINEAR, utils.MUTATE_CONNECTIONS, 8, vectorSize, 24, 4);
+				return new NeuralNetworkAsteroids(utils.FROM_TWO_PARENTS, utils.FITNESS_FUNCTION_LINEAR, utils.MUTATE_CONNECTIONS, 10, VECTOR_SIZE, 24, 4);
 			}
 		};
-		Evolution darwin = new Evolution(300, 300 / 3, fact, 0.6, 0.05, 0.3, 0.25, 0.08, 10, true);
-		Vector in = new Vector(vectorSize);
+		Evolution darwin = new Evolution(3000, 3000 / 3, fact, 0.6, 0.05, 0.3, 0.25, 0.08, 10, true);
+		Vector in = new Vector(VECTOR_SIZE);
 		
 		// System.out.println(darwin.run(20000, 1, 10000)-1); 
-		System.out.println(darwin.run(200000, 1, 400)-1);
-		Game game = new Game(asteroidsN);
+		System.out.println(darwin.run(200000, 1, 4000)-1);
+		Game game = new Game(ASTEROIDS_N);
 		game.newGame();
 		while (!game.isOver()) {
 			in.fillWith(game.getData());

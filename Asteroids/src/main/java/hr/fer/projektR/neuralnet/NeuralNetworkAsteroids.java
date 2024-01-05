@@ -6,6 +6,7 @@ import java.util.function.BinaryOperator;
 
 import hr.fer.projektR.Utils.SerializableTriConsumer;
 import hr.fer.projektR.evolucijski.Jedinka;
+import hr.fer.projektR.game.AsteroidsAI;
 import hr.fer.projektR.game.Game;
 import hr.fer.projektR.math.Vector;
 
@@ -87,14 +88,14 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 		return fit / (10 * numberOfRepetitions);
 	}
 
-	// @Override
-	// public double bigRandom() {
-	// 	return rand.nextGaussian()*1000;
-	// }
-	// @Override
-	// public double smallRandom() {
-	// 	return super.smallRandom()*250;
-	// }
+	@Override
+	public double bigRandom() {
+		return rand.nextGaussian()*AsteroidsAI.BIG_RANDOM_RANGE;
+	}
+	@Override
+	public double smallRandom() {
+		return super.smallRandom()*AsteroidsAI.SMALL_RANDOM_RANGE;
+	}
 	
 	@Override
 	public Vector process(Vector input) {
