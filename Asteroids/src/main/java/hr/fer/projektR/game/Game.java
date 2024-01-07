@@ -197,41 +197,41 @@ public class Game implements Drawable, java.io.Serializable {
 			Vector2D relativePos = Vector2D.subVector2d(player.getPos(),asteroid.getPos());
 			Vector2D relativeSpeed = Vector2D.subVector2d(asteroid.getSpeed(), player.getSpeed());
 
-			// data[i++] = angleFromPlayer(relativePos);
-			// data[i++] = relativePos.abs();
-			// data[i++] = speedAngleFromPlayer(relativePos, relativeSpeed);
-			// data[i++] = relativeSpeed.abs();
-			// data[i++] = asteroid.size();
-
-			data[i++] = relativePos.x;
-			data[i++] = relativePos.y;
-			data[i++] = relativeSpeed.x;
-			data[i++] = relativeSpeed.y;
+			data[i++] = angleFromPlayer(relativePos);
+			data[i++] = relativePos.abs();
+			data[i++] = speedAngleFromPlayer(relativePos, relativeSpeed);
+			data[i++] = relativeSpeed.abs();
 			data[i++] = asteroid.size();
+
+			// data[i++] = relativePos.x;
+			// data[i++] = relativePos.y;
+			// data[i++] = relativeSpeed.x;
+			// data[i++] = relativeSpeed.y;
+			// data[i++] = asteroid.size();
 		}
 		if (asteroids.size() < asteroidsN) {
 			while (i < asteroidsN * 5 + 3) {
-				// data[i++] = Math.PI;
-				// data[i++] = Double.POSITIVE_INFINITY;
-				// data[i++] = Math.PI;
-				// data[i++] = 0;
-				// data[i++] = 0;
+				data[i++] = -Math.PI;
+				data[i++] = Double.POSITIVE_INFINITY;
+				data[i++] = Math.PI;
+				data[i++] = 0;
+				data[i++] = 0;
 
-				data[i++] = Double.POSITIVE_INFINITY;
-				data[i++] = Double.POSITIVE_INFINITY;
-				data[i++] = 0;
-				data[i++] = 0;
-				data[i++] = 0;				
+				// data[i++] = Double.POSITIVE_INFINITY;
+				// data[i++] = Double.POSITIVE_INFINITY;
+				// data[i++] = 0;
+				// data[i++] = 0;
+				// data[i++] = 0;				
 			}
 		}
 		return data;
 	}
 
 	private double checkIfAngleOK(double angle) {
-		if (angle < 0) {
+		if (angle < -Math.PI) {
 			angle += 2 * Math.PI;
 		}
-		else if (angle >= 2 * Math.PI) {
+		else if (angle >= Math.PI) {
 			angle -= 2 * Math.PI;
 		}
 		return angle;

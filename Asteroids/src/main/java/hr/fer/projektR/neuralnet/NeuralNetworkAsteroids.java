@@ -6,7 +6,6 @@ import java.util.function.BinaryOperator;
 
 import hr.fer.projektR.Utils.SerializableTriConsumer;
 import hr.fer.projektR.evolucijski.Jedinka;
-import hr.fer.projektR.game.AsteroidsAI;
 import hr.fer.projektR.game.Game;
 import hr.fer.projektR.math.Vector;
 
@@ -15,6 +14,8 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 	private Game model;
 	private int numberOfRepetitions;
 	private BinaryOperator<Double> fitnessMethod = null;
+	int smallRandomRange;
+	int bigRandomRange;
 
 	public NeuralNetworkAsteroids(int... c) {
 		this(6, c);
@@ -28,7 +29,7 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 	public NeuralNetworkAsteroids(SerializableTriConsumer<NeuralNetwork, NeuralNetwork, NeuralNetwork> fromParentMethod, BinaryOperator<Double> fitnessMethod, BiConsumer<NeuralNetwork, Double> mutationMethod, int numberOfRepetitions, int... c) {
 		super(fromParentMethod, mutationMethod, c);
 		rand = new Random();
-		model = new Game(c[0] / 5);
+		model = new Game((c[0] - 3) / 5);
 		this.numberOfRepetitions = numberOfRepetitions;
 		this.fitnessMethod = fitnessMethod;
 	}
@@ -38,6 +39,11 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 	public NeuralNetworkAsteroids(NeuralNetwork n) {
 		super(n);
 		rand = new Random();
+	}
+	public NeuralNetworkAsteroids(int smallRandomRange, int bigRandomRange, SerializableTriConsumer<NeuralNetwork, NeuralNetwork, NeuralNetwork> fromParentMethod, BinaryOperator<Double> fitnessMethod, BiConsumer<NeuralNetwork, Double> mutationMethod, int numberOfRepetitions, int... c) {
+		this(fromParentMethod, fitnessMethod, mutationMethod, numberOfRepetitions, c);
+		this.smallRandomRange = smallRandomRange;
+		this.bigRandomRange = bigRandomRange;
 	}
 
 	@Override
@@ -90,11 +96,11 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 
 	@Override
 	public double bigRandom() {
-		return rand.nextGaussian()*AsteroidsAI.BIG_RANDOM_RANGE;
+		return rand.nextGaussian() * bigRandomRange;
 	}
 	@Override
 	public double smallRandom() {
-		return super.smallRandom()*AsteroidsAI.SMALL_RANDOM_RANGE;
+		return super.smallRandom() * smallRandomRange;
 	}
 	
 	@Override
