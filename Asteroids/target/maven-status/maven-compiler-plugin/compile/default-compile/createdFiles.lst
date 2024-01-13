@@ -26,6 +26,7 @@ hr\fer\projektR\Utils\SerializableBinaryOperator.class
 hr\fer\projektR\math\Matrix.class
 hr\fer\projektR\game\Game.class
 hr\fer\projektR\math\Vector.class
+hr\fer\projektR\Utils\StoreLoadUtils.class
 hr\fer\projektR\game\GameObject.class
 hr\fer\projektR\Utils\NeuralNetworkEvolutionUtils$5.class
 hr\fer\projektR\game\Vector2D.class

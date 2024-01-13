@@ -3,7 +3,8 @@ package hr.fer.projektR.evolucijski;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Arrays;
-import hr.fer.projektR.game.AsteroidsAI;
+
+import hr.fer.projektR.Utils.StoreLoadUtils;
 
 public class Evolution {
 	private List<Jedinka> generation, sideGeneration;
@@ -180,7 +181,7 @@ public class Evolution {
 			}
 			if (k % 25 == 0 || k == 1) {
 				refreshBestScores(k);
-				AsteroidsAI.saveObject(generation.get(best), "src/main/resources/" + generation.get(best).getClass().toString().substring(generation.get(best).getClass().toString().lastIndexOf(".") + 1) + k);
+				StoreLoadUtils.saveObjectSerialized(generation.get(best), "src/main/resources/" + generation.get(best).getClass().toString().substring(generation.get(best).getClass().toString().lastIndexOf(".") + 1) + k);
 				System.out.println("============================================================");
 			}
 		}

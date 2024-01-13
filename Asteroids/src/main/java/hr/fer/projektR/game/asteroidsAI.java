@@ -6,7 +6,6 @@ import hr.fer.projektR.evolucijski.JedinkaFactroy;
 import hr.fer.projektR.math.Vector;
 import hr.fer.projektR.neuralnet.NeuralNetworkAsteroids;
 import hr.fer.projektR.neuralnet.NeuralNetwork;
-import java.io.*;
 
 /**
  * Kako mijenjati parametre:
@@ -84,27 +83,8 @@ public class AsteroidsAI {
 				game.step();
 			}
 		}
-		saveObject((NeuralNetworkAsteroids) darwin.getBest(), "src/main/resources/NeuralNetworkFile");
+		// saveObject((NeuralNetworkAsteroids) darwin.getBest(), "src/main/resources/NeuralNetworkFile");
 		System.out.println(game.getScore());
 	}
-	// <T extends Serializable>
-	public static  void saveObject (java.io.Serializable best, String name) {
-		try {   
-        	//Saving of object in a file
-            FileOutputStream file = new FileOutputStream(name);
-            ObjectOutputStream out = new ObjectOutputStream(file);
-             
-            // Method for serialization of object
-            out.writeObject(best);
-             
-            out.close();
-            file.close();
 
-			System.out.println("Serialized!");
-        }
-        catch(IOException ex) {
-			ex.printStackTrace();
-            System.out.println("IOException is caught");
-        }
-	}
 }

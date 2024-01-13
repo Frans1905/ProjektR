@@ -1,5 +1,6 @@
 package hr.fer.projektR.app;
 
+import hr.fer.projektR.Utils.StoreLoadUtils;
 import hr.fer.projektR.game.Game;
 import hr.fer.projektR.math.Vector;
 import hr.fer.projektR.neuralnet.NeuralNetworkAsteroids;
@@ -10,44 +11,24 @@ import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.scene.transform.Affine;
 import javafx.stage.Stage;
-import java.io.*;
 
 public class AsteroidsGameAI extends Application {
 	private Game game;
-    private NeuralNetworkAsteroids network;
+    private NeuralNetworkAsteroids network = new NeuralNetworkAsteroids(1, 1, null, null, null, 10, 10, 24, 4);
 	boolean keyA = false, keyD = false, keyW = false, keySpace=false;
 	public static int asteroidsN = 8;
 
     public AsteroidsGameAI() {
-        loadNetwork("src/main/resources/NeuralNetworkAsteroids400");        
+        // za isprobavanje spremljene mreze u .txt
+        network = StoreLoadUtils.loadFrom("src/main/resources/textSaves/NeuralNetworkAsteroids125", network);        
+
+        // za isprobavanje mreza iz zadnje evolucije
+        // network = StoreLoadUtils.loadNetworkSerialized("src/main/resources/NeuralNetworkAsteroids175");
 
         asteroidsN = network.getLayers()[0].getWeights().getNcol() - 3;
         asteroidsN /= 5;
         game = new Game(asteroidsN);
 	}
-
-    private void loadNetwork(String name) {
-        try {   
-            // Reading the object from a file
-            FileInputStream file = new FileInputStream(name);
-            ObjectInputStream in = new ObjectInputStream(file);
-             
-            // Method for deserialization of object
-            network = (NeuralNetworkAsteroids)in.readObject();
-             
-            in.close();
-            file.close();
-
-            System.out.println("Deserialized!");
-        }
-        catch(IOException ex) {
-            ex.printStackTrace();
-            System.out.println("IOException is caught");
-        } 
-        catch (ClassNotFoundException e) {
-            System.out.println("ClassNotFoundException is caught");
-        }
-    }
 
 	@Override
 	public void start(Stage theStage) throws Exception {
