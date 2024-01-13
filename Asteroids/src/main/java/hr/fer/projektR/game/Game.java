@@ -32,7 +32,7 @@ public class Game implements Drawable, java.io.Serializable {
 	public Game(int n) {
 		asteroids = new LinkedList<>();
 		asteroidsN = n;
-		data = new double[asteroidsN * 5 + 3];
+		data = new double[asteroidsN * 5];
 		newGame();
 	}
 	
@@ -189,12 +189,12 @@ public class Game implements Drawable, java.io.Serializable {
 	public double[] getData() {
 		// double[] data = new double[asteroidsN * 5 + 3];
 		int i = 0;
-		data[i++] = player.getOrient();
-		data[i++] = player.getForceVector().x;
-		data[i++] = player.getForceVector().y;
+		// data[i++] = player.getOrient();
+		// data[i++] = player.getForceVector().x;
+		// data[i++] = player.getForceVector().y;
 		List<Asteroid> dangerous =  filterAsteroids((new DangerComparator(player)).reversed(), Math.min(asteroids.size(), asteroidsN));
 		for (Asteroid asteroid : dangerous) {
-			Vector2D relativePos = Vector2D.subVector2d(player.getPos(),asteroid.getPos());
+			Vector2D relativePos = Vector2D.subVector2d(player.getPos(), asteroid.getPos());
 			Vector2D relativeSpeed = Vector2D.subVector2d(asteroid.getSpeed(), player.getSpeed());
 
 			data[i++] = angleFromPlayer(relativePos);
@@ -210,7 +210,7 @@ public class Game implements Drawable, java.io.Serializable {
 			// data[i++] = asteroid.size();
 		}
 		if (asteroids.size() < asteroidsN) {
-			while (i < asteroidsN * 5 + 3) {
+			while (i < asteroidsN * 5) {
 				data[i++] = -Math.PI;
 				data[i++] = Double.POSITIVE_INFINITY;
 				data[i++] = Math.PI;
@@ -228,10 +228,10 @@ public class Game implements Drawable, java.io.Serializable {
 	}
 
 	private double checkIfAngleOK(double angle) {
-		if (angle < -Math.PI) {
+		while (angle < -Math.PI) {
 			angle += 2 * Math.PI;
 		}
-		else if (angle >= Math.PI) {
+		while (angle >= Math.PI) {
 			angle -= 2 * Math.PI;
 		}
 		return angle;
@@ -245,10 +245,10 @@ public class Game implements Drawable, java.io.Serializable {
 
 	private double speedAngleFromPlayer(Vector2D relativePos, Vector2D relativeSpeed) {
 		double angle = Math.atan2(relativePos.y, relativePos.x);
-		double speedAngle = Math.atan2(relativeSpeed.y, relativeSpeed.x);
-		angle += speedAngle;
+		double speedAngle = Math.atan2(relativeSpeed.y, relativeSpeed.x) + Math.PI;
+		speedAngle -= angle;
 
-		return checkIfAngleOK(angle);
+		return checkIfAngleOK(speedAngle);
 	}
 	
 	public boolean isOver() {

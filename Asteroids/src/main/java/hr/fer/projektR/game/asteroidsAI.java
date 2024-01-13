@@ -26,6 +26,7 @@ import hr.fer.projektR.neuralnet.NeuralNetwork;
  * 		bigMutation: vjerojatnost da mutacija bude velika (DEFAULT: 0.1)
  * 		relative: vjerojatnost da se "gen" prilikom mutacije poveca, u suprotnom se zamijeni (DEFAULT: 0.5)
  * 		alpha: parametar za BLX-alpha crossover; samo za metode za reprodukciju (DEFAULT: 0.1)
+ * 		bulletPenalizationScale: koliko "bodova" kosta pucanje jednog metka kod racunanja fitnessa mreze (DEFAULT: 1)
  * 		
  * 	NeuralNetworkAsteroids
  * 	----------------------
@@ -53,9 +54,9 @@ public class AsteroidsAI {
 	public static final int BIG_RANDOM_RANGE = 20;
 	public static final int ASTEROIDS_N = 8;
 
-	public static final int VECTOR_SIZE = ASTEROIDS_N * 5 + 3;
+	public static final int VECTOR_SIZE = ASTEROIDS_N * 5;
 	public static void main(String[] args) {
-		NeuralNetworkEvolutionUtils utils = new NeuralNetworkEvolutionUtils(0.12, 0.5, 0.1);
+		NeuralNetworkEvolutionUtils utils = new NeuralNetworkEvolutionUtils(0.12, 0.5, 0.1, 10);
 		JedinkaFactroy<NeuralNetworkAsteroids> fact = new JedinkaFactroy<NeuralNetworkAsteroids>() {
 			@Override
 			public NeuralNetworkAsteroids create() {
@@ -66,7 +67,7 @@ public class AsteroidsAI {
 		Vector in = new Vector(VECTOR_SIZE);
 		
 		// System.out.println(darwin.run(20000, 1, 10000)-1); 
-		System.out.println(darwin.run(200000, 1, 400)-1);
+		System.out.println(darwin.run(200000, 1, 300)-1);
 		Game game = new Game(ASTEROIDS_N);
 		game.newGame();
 		while (!game.isOver()) {

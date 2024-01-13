@@ -14,18 +14,18 @@ import javafx.stage.Stage;
 
 public class AsteroidsGameAI extends Application {
 	private Game game;
-    private NeuralNetworkAsteroids network = new NeuralNetworkAsteroids(1, 1, null, null, null, 10, 10, 24, 4);
+    private NeuralNetworkAsteroids network = new NeuralNetworkAsteroids();
 	boolean keyA = false, keyD = false, keyW = false, keySpace=false;
 	public static int asteroidsN = 8;
 
     public AsteroidsGameAI() {
         // za isprobavanje spremljene mreze u .txt
-        network = StoreLoadUtils.loadFrom("src/main/resources/textSaves/NeuralNetworkAsteroids125", network);        
+        // network = StoreLoadUtils.loadFrom("src/main/resources/textSaves/NeuralNetworkAsteroids125", network);        
 
         // za isprobavanje mreza iz zadnje evolucije
-        // network = StoreLoadUtils.loadNetworkSerialized("src/main/resources/NeuralNetworkAsteroids175");
+        network = StoreLoadUtils.loadNetworkSerialized("src/main/resources/NeuralNetworkAsteroids300");
 
-        asteroidsN = network.getLayers()[0].getWeights().getNcol() - 3;
+        asteroidsN = network.getLayers()[0].getWeights().getNcol();
         asteroidsN /= 5;
         game = new Game(asteroidsN);
 	}

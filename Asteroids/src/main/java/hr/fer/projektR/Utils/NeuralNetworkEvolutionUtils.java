@@ -6,6 +6,7 @@ public class NeuralNetworkEvolutionUtils implements java.io.Serializable {
     private double bigMutation = 0.12;
     private double relative = 0.5;
     private double alpha = 0.1;
+    private int bulletPenalizationScale = 1;
 
     public NeuralNetworkEvolutionUtils(double bigMutation, double relative, double alpha) {
         super();
@@ -21,6 +22,10 @@ public class NeuralNetworkEvolutionUtils implements java.io.Serializable {
     }
     public NeuralNetworkEvolutionUtils() {
         this(0.1, 0.5, 0.1);
+    }
+    public NeuralNetworkEvolutionUtils(double bigMutation, double relative, double alpha, int bulletPenalizationScale) {
+        this(bigMutation, relative, alpha);
+        this.bulletPenalizationScale = bulletPenalizationScale;
     }
     // ----------------------------------------------------------------------------------------------------
     // MUTATION METHODS
@@ -94,34 +99,34 @@ public class NeuralNetworkEvolutionUtils implements java.io.Serializable {
     };
     // ----------------------------------------------------------------------------------------------------
     // FITNESS METHODS
-    final public SerializableBinaryOperator<Double> FITNESS_FUNCTION_LINEAR = new SerializableBinaryOperator<Double>() {
+    final public SerializableTriOperator<Double> FITNESS_FUNCTION_LINEAR = new SerializableTriOperator<Double>() {
         @Override
-        public Double apply(Double score, Double time) {
-            return score + time;
+        public Double apply(Double score, Double time, Double bullets) {
+            return score + time - bullets * bulletPenalizationScale;
         }
     };
-    final public SerializableBinaryOperator<Double> FITNESS_FUNCTION_LIN_LOG_TIME = new SerializableBinaryOperator<Double>() {
+    final public SerializableTriOperator<Double> FITNESS_FUNCTION_LIN_LOG_TIME = new SerializableTriOperator<Double>() {
         @Override
-        public Double apply(Double score, Double time) {
-            return score + time * Math.log(time);
+        public Double apply(Double score, Double time, Double bullets) {
+            return score + time * Math.log(time) - bullets * bulletPenalizationScale;
         }
     };
-    final public SerializableBinaryOperator<Double> FITNESS_FUNCTION_LIN_LOG_SCORE = new SerializableBinaryOperator<Double>() {
+    final public SerializableTriOperator<Double> FITNESS_FUNCTION_LIN_LOG_SCORE = new SerializableTriOperator<Double>() {
         @Override
-        public Double apply(Double score, Double time) {
+        public Double apply(Double score, Double time, Double bullets) {
             if (score == 0.0) {
                 return time;
             }
-            return score * Math.log(score) + time;
+            return score * Math.log(score) + time - bullets * bulletPenalizationScale;
         }
     };
-    final public SerializableBinaryOperator<Double> FITNESS_FUNCTION_LIN_LOG = new SerializableBinaryOperator<Double>() {
+    final public SerializableTriOperator<Double> FITNESS_FUNCTION_LIN_LOG = new SerializableTriOperator<Double>() {
         @Override
-        public Double apply(Double score, Double time) {
+        public Double apply(Double score, Double time, Double bullets) {
             if (score == 0.0) {
                 return time * Math.log(time);
             }
-            return score * Math.log(score) + time * Math.log(time);
+            return score * Math.log(score) + time * Math.log(time) - bullets * bulletPenalizationScale;
         }
     };
 }

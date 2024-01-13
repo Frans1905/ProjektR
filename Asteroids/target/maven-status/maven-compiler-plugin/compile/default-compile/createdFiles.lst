@@ -35,6 +35,7 @@ hr\fer\projektR\Utils\NeuralNetworkEvolutionUtils$4.class
 hr\fer\projektR\neuralnet\NeuralNetwork.class
 hr\fer\projektR\game\Asteroid.class
 hr\fer\projektR\evolucijski\Evolution.class
+hr\fer\projektR\Utils\SerializableTriOperator.class
 hr\fer\projektR\Utils\NeuralNetworkEvolutionUtils$6.class
 hr\fer\projektR\game\comparators\DangerComparator.class
 hr\fer\projektR\app\AsteroidsGame$4.class

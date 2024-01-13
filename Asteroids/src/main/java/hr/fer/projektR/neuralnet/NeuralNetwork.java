@@ -11,6 +11,9 @@ public abstract class NeuralNetwork implements Jedinka, java.io.Serializable {
 	private BiConsumer<NeuralNetwork, Double> mutationMethod = null;
 	private SerializableTriConsumer<NeuralNetwork, NeuralNetwork, NeuralNetwork> fromParentMethod = null;
 	
+	public NeuralNetwork() {
+		super();
+	}
 	public NeuralNetwork(Layer[] layers) {
 		this.layers = layers;
 	}

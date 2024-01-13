@@ -2,9 +2,8 @@ package hr.fer.projektR.neuralnet;
 
 import java.util.Random;
 import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
-
 import hr.fer.projektR.Utils.SerializableTriConsumer;
+import hr.fer.projektR.Utils.SerializableTriOperator;
 import hr.fer.projektR.evolucijski.Jedinka;
 import hr.fer.projektR.game.Game;
 import hr.fer.projektR.math.Vector;
@@ -13,34 +12,37 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 	private Random rand;
 	private Game model;
 	private int numberOfRepetitions;
-	private BinaryOperator<Double> fitnessMethod = null;
+	private SerializableTriOperator<Double> fitnessMethod = null;
 	int smallRandomRange;
 	int bigRandomRange;
 
+	public NeuralNetworkAsteroids() {
+		super();
+	}
 	public NeuralNetworkAsteroids(int... c) {
 		this(6, c);
 	}
 	public NeuralNetworkAsteroids(int numberOfRepetitions, int... c) {
 		this(null, null, null, numberOfRepetitions, c);
 	}
-	public NeuralNetworkAsteroids(BinaryOperator<Double> fitnessMethod, BiConsumer<NeuralNetwork, Double> mutationMethod, int numberOfRepetitions, int... c) {
+	public NeuralNetworkAsteroids(SerializableTriOperator<Double> fitnessMethod, BiConsumer<NeuralNetwork, Double> mutationMethod, int numberOfRepetitions, int... c) {
 		this(null, fitnessMethod, mutationMethod, numberOfRepetitions, c);
 	}
-	public NeuralNetworkAsteroids(SerializableTriConsumer<NeuralNetwork, NeuralNetwork, NeuralNetwork> fromParentMethod, BinaryOperator<Double> fitnessMethod, BiConsumer<NeuralNetwork, Double> mutationMethod, int numberOfRepetitions, int... c) {
+	public NeuralNetworkAsteroids(SerializableTriConsumer<NeuralNetwork, NeuralNetwork, NeuralNetwork> fromParentMethod, SerializableTriOperator<Double> fitnessMethod, BiConsumer<NeuralNetwork, Double> mutationMethod, int numberOfRepetitions, int... c) {
 		super(fromParentMethod, mutationMethod, c);
 		rand = new Random();
-		model = new Game((c[0] - 3) / 5);
+		model = new Game((c[0]) / 5);
 		this.numberOfRepetitions = numberOfRepetitions;
 		this.fitnessMethod = fitnessMethod;
 	}
-	public NeuralNetworkAsteroids(SerializableTriConsumer<NeuralNetwork, NeuralNetwork, NeuralNetwork> fromParentMethod, BinaryOperator<Double> fitnessMethod, int numberOfRepetitions, int... c) {
+	public NeuralNetworkAsteroids(SerializableTriConsumer<NeuralNetwork, NeuralNetwork, NeuralNetwork> fromParentMethod, SerializableTriOperator<Double> fitnessMethod, int numberOfRepetitions, int... c) {
 		this(fromParentMethod, fitnessMethod, null, numberOfRepetitions, c);
 	}
 	public NeuralNetworkAsteroids(NeuralNetwork n) {
 		super(n);
 		rand = new Random();
 	}
-	public NeuralNetworkAsteroids(int smallRandomRange, int bigRandomRange, SerializableTriConsumer<NeuralNetwork, NeuralNetwork, NeuralNetwork> fromParentMethod, BinaryOperator<Double> fitnessMethod, BiConsumer<NeuralNetwork, Double> mutationMethod, int numberOfRepetitions, int... c) {
+	public NeuralNetworkAsteroids(int smallRandomRange, int bigRandomRange, SerializableTriConsumer<NeuralNetwork, NeuralNetwork, NeuralNetwork> fromParentMethod, SerializableTriOperator<Double> fitnessMethod, BiConsumer<NeuralNetwork, Double> mutationMethod, int numberOfRepetitions, int... c) {
 		this(fromParentMethod, fitnessMethod, mutationMethod, numberOfRepetitions, c);
 		this.smallRandomRange = smallRandomRange;
 		this.bigRandomRange = bigRandomRange;
@@ -69,12 +71,14 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 		for (int k = 0; k < numberOfRepetitions; k++) {
 			
 			model.newGame();
+			int nBullets = 0;
 			int i = 0, j = 0;
 			for (i = 0; i < sekundi * 10 && !model.isOver(); i++) {
 				in.fillWith(model.getData());
 				Vector m = process(in);
 				if (m.matrix[0][0] > 0.5) {
 					model.spaceInput();
+					nBullets++;
 				}
 				boolean wPress = m.matrix[1][0] > 0.5, aPress = m.matrix[2][0] > 0.5, dPress = m.matrix[3][0] > 0.5;
 				for (j = 0; j < 10 && !model.isOver(); j++) {
@@ -85,10 +89,10 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 				}
 			}
 			if (fitnessMethod == null) {
-				fit += model.getScore() + (10.0*i+1.0*j);
+				fit += model.getScore() + (10.0*i+1.0*j) - nBullets;
 			}
 			else {
-				fit += fitnessMethod.apply((double) model.getScore(), 10.0*i + 1.0*j);
+				fit += fitnessMethod.apply((double) model.getScore(), 10.0*i + 1.0*j, (double) nBullets);
 			}
 		}
 		return fit / (10 * numberOfRepetitions);
