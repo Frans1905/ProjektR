@@ -114,7 +114,7 @@ public class Evolution {
 			if (j == best) {
 				continue;
 			}
-			if (goodness[j] > median) {
+			if (goodness[j] >= median) {
 				sideGeneration.get(i).copy(generation.get(j));
 				sideGoodness[i++] = goodness[j];
 				sideGoodnessSum += goodness[j];

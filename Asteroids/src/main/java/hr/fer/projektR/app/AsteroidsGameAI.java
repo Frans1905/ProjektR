@@ -20,10 +20,10 @@ public class AsteroidsGameAI extends Application {
 
     public AsteroidsGameAI() {
         // za isprobavanje spremljene mreze u .txt
-        // network = StoreLoadUtils.loadFrom("src/main/resources/textSaves/NeuralNetworkAsteroids125", network);        
+        network = StoreLoadUtils.loadFrom("src/main/resources/textSaves/NeuralNetworkAsteroids425", network);        
 
         // za isprobavanje mreza iz zadnje evolucije
-        network = StoreLoadUtils.loadNetworkSerialized("src/main/resources/NeuralNetworkAsteroids300");
+        // network = StoreLoadUtils.loadNetworkSerialized("src/main/resources/NeuralNetworkAsteroids500");
 
         asteroidsN = network.getLayers()[0].getWeights().getNcol();
         asteroidsN /= 5;

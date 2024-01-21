@@ -56,14 +56,14 @@ public class AsteroidsAI {
 
 	public static final int VECTOR_SIZE = ASTEROIDS_N * 5;
 	public static void main(String[] args) {
-		NeuralNetworkEvolutionUtils utils = new NeuralNetworkEvolutionUtils(0.12, 0.5, 0.1, 10);
+		NeuralNetworkEvolutionUtils utils = new NeuralNetworkEvolutionUtils(0.12, 0.5, 0.1, 40);
 		JedinkaFactroy<NeuralNetworkAsteroids> fact = new JedinkaFactroy<NeuralNetworkAsteroids>() {
 			@Override
 			public NeuralNetworkAsteroids create() {
 				return new NeuralNetworkAsteroids(SMALL_RANDOM_RANGE, BIG_RANDOM_RANGE, utils.FROM_TWO_PARENTS, utils.FITNESS_FUNCTION_LINEAR, utils.MUTATE_CONNECTIONS, 10, VECTOR_SIZE, 24, 4);
 			}
 		};
-		Evolution darwin = new Evolution(300, 300 / 3, fact, 0.6, 0.05, 0.3, 0.25, 0.08, 10, true);
+		Evolution darwin = new Evolution(300, 300 / 3 + 50, fact, 0.6, 0.05, 0.25, 0.25, 0.08, 10, true);
 		Vector in = new Vector(VECTOR_SIZE);
 		
 		// System.out.println(darwin.run(20000, 1, 10000)-1); 

@@ -3,6 +3,8 @@ package hr.fer.projektR.game;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+
+import hr.fer.projektR.game.comparators.ClosestDistanceComparator;
 import hr.fer.projektR.game.comparators.DangerComparator;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
@@ -87,9 +89,9 @@ public class Game implements Drawable, java.io.Serializable {
 					break;
 			}
 			Vector2D pos = new Vector2D(x, y);
-			Vector2D speed = Vector2D.I.rotate(Math.random() * 2 * Math.PI).scale(Math.random() * 50 + 50);				
+			Vector2D speed = Vector2D.I.rotate(Math.random() * 2 * Math.PI).scale(Math.random() * 30 + 50);				
 			if (i == 0) {
-				speed = Vector2D.subVector2d(player.getPos(), pos).unit().scale(100);
+				speed = Vector2D.subVector2d(player.getPos(), pos).unit().scale(80);
 			}
 			int size = 1<<((int) (Math.random() * 2.99)) ;
 			if (asteroids.size() < MAX_ASTEROID_MATERIAL)
@@ -192,6 +194,8 @@ public class Game implements Drawable, java.io.Serializable {
 		// data[i++] = player.getOrient();
 		// data[i++] = player.getForceVector().x;
 		// data[i++] = player.getForceVector().y;
+		
+		// List<Asteroid> dangerous =  filterAsteroids((new ClosestDistanceComparator(player)).reversed(), Math.min(asteroids.size(), asteroidsN));
 		List<Asteroid> dangerous =  filterAsteroids((new DangerComparator(player)).reversed(), Math.min(asteroids.size(), asteroidsN));
 		for (Asteroid asteroid : dangerous) {
 			Vector2D relativePos = Vector2D.subVector2d(player.getPos(), asteroid.getPos());

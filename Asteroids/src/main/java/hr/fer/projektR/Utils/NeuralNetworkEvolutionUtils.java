@@ -101,32 +101,50 @@ public class NeuralNetworkEvolutionUtils implements java.io.Serializable {
     // FITNESS METHODS
     final public SerializableTriOperator<Double> FITNESS_FUNCTION_LINEAR = new SerializableTriOperator<Double>() {
         @Override
-        public Double apply(Double score, Double time, Double bullets) {
-            return score + time - bullets * bulletPenalizationScale;
+        public Double apply(Double score, Double time, Double misses) {
+            return score + time - misses * bulletPenalizationScale;
         }
     };
     final public SerializableTriOperator<Double> FITNESS_FUNCTION_LIN_LOG_TIME = new SerializableTriOperator<Double>() {
         @Override
-        public Double apply(Double score, Double time, Double bullets) {
-            return score + time * Math.log(time) - bullets * bulletPenalizationScale;
+        public Double apply(Double score, Double time, Double misses) {
+            return score + time * Math.log(time) - misses * bulletPenalizationScale;
         }
     };
     final public SerializableTriOperator<Double> FITNESS_FUNCTION_LIN_LOG_SCORE = new SerializableTriOperator<Double>() {
         @Override
-        public Double apply(Double score, Double time, Double bullets) {
+        public Double apply(Double score, Double time, Double misses) {
             if (score == 0.0) {
                 return time;
             }
-            return score * Math.log(score) + time - bullets * bulletPenalizationScale;
+            return score * Math.log(score) + time - misses * bulletPenalizationScale;
         }
     };
     final public SerializableTriOperator<Double> FITNESS_FUNCTION_LIN_LOG = new SerializableTriOperator<Double>() {
         @Override
-        public Double apply(Double score, Double time, Double bullets) {
+        public Double apply(Double score, Double time, Double misses) {
             if (score == 0.0) {
                 return time * Math.log(time);
             }
-            return score * Math.log(score) + time * Math.log(time) - bullets * bulletPenalizationScale;
+            return score * Math.log(score) + time * Math.log(time) - misses * bulletPenalizationScale;
+        }
+    };
+    final public SerializableTriOperator<Double> FITNESS_FUNCTION_LOG = new SerializableTriOperator<Double>() {
+        @Override
+        public Double apply(Double score, Double time, Double misses) {
+            if (score == 0.0) {
+                return time * Math.log(time);
+            }
+            return score * Math.log(score) + time * Math.log(time) - misses * bulletPenalizationScale * Math.log(misses * bulletPenalizationScale);
+        }
+    };
+    final public SerializableTriOperator<Double> FITNESS_FUNCTION_LOG_PUNISH = new SerializableTriOperator<Double>() {
+        @Override
+        public Double apply(Double score, Double time, Double misses) {
+            if (score == 0.0) {
+                return time * Math.log(time);
+            }
+            return score + time - misses * bulletPenalizationScale * Math.log(misses * bulletPenalizationScale);
         }
     };
 }

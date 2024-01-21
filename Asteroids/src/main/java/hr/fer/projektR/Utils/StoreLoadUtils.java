@@ -22,9 +22,9 @@ import hr.fer.projektR.neuralnet.NeuralNetworkAsteroids;
 public class StoreLoadUtils {
     // main se koristi kada se zeli spremiti mreza (spremaju se samo slojevi mreze, ostali parametri se ne spremaju, ali nakon evolucije nisu niti bitni)
     public static void main(String[] args) {
-        NeuralNetworkAsteroids network = loadNetworkSerialized("src/main/resources/NeuralNetworkAsteroids300");
+        NeuralNetworkAsteroids network = loadNetworkSerialized("src/main/resources/NeuralNetworkAsteroids425");
         System.out.println("Loaded");
-        saveTo("src/main/resources/textSaves/NeuralNetworkAsteroids200", network);
+        saveTo("src/main/resources/textSaves/NeuralNetworkAsteroids425", network);
         System.out.println("Saved");
     }   
 

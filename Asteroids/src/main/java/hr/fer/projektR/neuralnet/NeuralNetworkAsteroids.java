@@ -71,14 +71,27 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 		for (int k = 0; k < numberOfRepetitions; k++) {
 			
 			model.newGame();
-			int nBullets = 0;
+			// int nBullets = 0;
+			int missCount = 0;
+			long lastScore = 0;
+			boolean lastTimeShot = false;
 			int i = 0, j = 0;
 			for (i = 0; i < sekundi * 10 && !model.isOver(); i++) {
+				if (lastTimeShot) {
+					lastTimeShot = false;
+					if (lastScore == model.getScore()) {
+						missCount++;
+					}
+				}
+
 				in.fillWith(model.getData());
 				Vector m = process(in);
 				if (m.matrix[0][0] > 0.5) {
 					model.spaceInput();
-					nBullets++;
+					// nBullets++;
+
+					lastScore = model.getScore();
+					lastTimeShot = true;
 				}
 				boolean wPress = m.matrix[1][0] > 0.5, aPress = m.matrix[2][0] > 0.5, dPress = m.matrix[3][0] > 0.5;
 				for (j = 0; j < 10 && !model.isOver(); j++) {
@@ -89,10 +102,10 @@ public class NeuralNetworkAsteroids extends NeuralNetwork  implements java.io.Se
 				}
 			}
 			if (fitnessMethod == null) {
-				fit += model.getScore() + (10.0*i+1.0*j) - nBullets;
+				fit += model.getScore() + (10.0*i+1.0*j) - missCount;
 			}
 			else {
-				fit += fitnessMethod.apply((double) model.getScore(), 10.0*i + 1.0*j, (double) nBullets);
+				fit += fitnessMethod.apply((double) model.getScore(), 10.0*i + 1.0*j, (double) missCount);
 			}
 		}
 		return fit / (10 * numberOfRepetitions);
