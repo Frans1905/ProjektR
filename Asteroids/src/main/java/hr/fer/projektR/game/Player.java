@@ -159,7 +159,7 @@ public class Player extends GameObject implements java.io.Serializable {
 	
 	public boolean isHitBy(Asteroid asteroid) {
 		for (Vector2D p: shape) {
-			if (asteroid.contains(Vector2D.addVector2d(getPos(), p))) {
+			if (asteroid.contains(Vector2D.addVector2d(getPos(), p.rotate(orient)))) {
 				return true;
 			}
 		}
