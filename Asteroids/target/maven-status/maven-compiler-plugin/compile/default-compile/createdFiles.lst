@@ -9,6 +9,7 @@ hr\fer\projektR\app\AsteroidsGameAI.class
 hr\fer\projektR\game\comparators\ClosestAngleComparator.class
 hr\fer\projektR\evolucijski\Evolution.class
 hr\fer\projektR\math\Matrix.class
+hr\fer\projektR\neuralnet\NeuralNetowrkAsteroids.class
 hr\fer\projektR\neuralnet\Layer.class
 hr\fer\projektR\game\Game.class
 hr\fer\projektR\math\Vector.class

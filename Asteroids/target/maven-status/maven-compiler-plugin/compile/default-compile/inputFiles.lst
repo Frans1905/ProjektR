@@ -1,26 +1,27 @@
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Drawable.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Player.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\neuralnet\NeuralNetworkAsteroids.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\math\Matrix.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Vector2D.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\asteroidsAI.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\GameObject.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\neuralnet\NeuralNetworkSin.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\evolucijski\Evolution.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\math\test.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\comparators\DangerComparator.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\app\AsteroidsGame.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\math\MatrixSizeException.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\neuralnet\NeuralNetwork.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\app\AsteroidsGameAI.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Asteroid.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Game.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\neuralnet\Layer.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\comparators\ClosestAngleComparator.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\comparators\ClosestDistanceComparator.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\neuralnet\Layer.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\evolucijski\Jedinka.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\evolucijski\JedinkaFactroy.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\math\MatrixOperationException.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\math\Vector.java
-D:\Programiranje\Java\ProjektR\Asteroids\src\main\java\hr\fer\projektR\neuralnet\NeuralNetwork.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\neuralnet\NeuralNetowrkAsteroids.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\neuralnet\NeuralNetwork.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\app\AsteroidsGame.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\GameObject.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\math\MatrixSizeException.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\evolucijski\Evolution.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\neuralnet\NeuralNetwork.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Vector2D.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Player.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\math\test.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Asteroid.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Game.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\comparators\ClosestAngleComparator.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\evolucijski\JedinkaFactroy.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\math\Matrix.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\neuralnet\Layer.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\Drawable.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\neuralnet\NeuralNetworkSin.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\app\AsteroidsGameAI.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\neuralnet\Layer.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\neuralnet\NeuralNetworkAsteroids.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\comparators\DangerComparator.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\asteroidsAI.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\game\comparators\ClosestDistanceComparator.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\math\MatrixOperationException.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\evolucijski\Jedinka.java
+C:\5. semestar\ProjektR\ProjektR\Asteroids\src\main\java\hr\fer\projektR\math\Vector.java
